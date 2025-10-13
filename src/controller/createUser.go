@@ -1,11 +1,21 @@
 package controller
 
 import (
-	rest_err "github.com/dlima78/gocourse/src/configuration"
+	"fmt"
+
+	"github.com/dlima78/gocourse/src/configuration/validation"
+	"github.com/dlima78/gocourse/src/model/request"
 	"github.com/gin-gonic/gin"
 )
 
 func CreateUser(c *gin.Context) {
-	err := rest_err.NewBadRequestError("Voce chamou a rota errada")
-	c.JSON(err.Code, err)
+	var userRequest request.UserRequest
+
+	if err := c.ShouldBindJSON(&userRequest); err != nil {
+		restErr := validation.ValidateUserError(err)
+
+		c.JSON(restErr.Code, restErr)
+		return
+	}
+	fmt.Println(userRequest)
 }
