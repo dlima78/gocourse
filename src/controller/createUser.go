@@ -5,10 +5,14 @@ import (
 
 	"github.com/dlima78/gocourse/src/configuration/logger"
 	"github.com/dlima78/gocourse/src/configuration/validation"
-	"github.com/dlima78/gocourse/src/model/request"
-	"github.com/dlima78/gocourse/src/model/response"
+	"github.com/dlima78/gocourse/src/controller/model/request"
+	"github.com/dlima78/gocourse/src/model"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+)
+
+var (
+	UserDomainInterface model.UserDomainInterface
 )
 
 func CreateUser(c *gin.Context) {
@@ -25,17 +29,23 @@ func CreateUser(c *gin.Context) {
 		c.JSON(restErr.Code, restErr)
 		return
 	}
-	response := response.UserResponse{
-		ID:    "test",
-		Email: userRequest.Email,
-		Name:  userRequest.Name,
-		Age:   userRequest.Age,
+
+	domain := model.NewUserDomain(
+		userRequest.Email,
+		userRequest.Password,
+		userRequest.Name,
+		userRequest.Age,
+	)
+
+	if err := domain.CreateUser(); err != nil {
+		c.JSON(err.Code, err)
+		return
 	}
 
 	logger.Info("User created successfully",
 		zap.String("journey", "createUser"),
 	)
 
-	c.JSON(http.StatusOK, response)
+	c.String(http.StatusOK, "")
 
 }
