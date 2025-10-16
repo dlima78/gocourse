@@ -7,6 +7,7 @@ import (
 	"github.com/dlima78/gocourse/src/configuration/validation"
 	"github.com/dlima78/gocourse/src/controller/model/request"
 	"github.com/dlima78/gocourse/src/model"
+	"github.com/dlima78/gocourse/src/model/service"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -37,7 +38,9 @@ func CreateUser(c *gin.Context) {
 		userRequest.Age,
 	)
 
-	if err := domain.CreateUser(); err != nil {
+	service := service.NewUserDomainService()
+
+	if err := service.CreateUser(domain); err != nil {
 		c.JSON(err.Code, err)
 		return
 	}
