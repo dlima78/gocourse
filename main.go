@@ -1,8 +1,10 @@
+// ...existing code...
 package main
 
 import (
 	"log"
 
+	"github.com/dlima78/gocourse/src/configuration/database/mongodb"
 	"github.com/dlima78/gocourse/src/controller"
 	"github.com/dlima78/gocourse/src/controller/routes"
 	"github.com/dlima78/gocourse/src/model/service"
@@ -16,7 +18,8 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	//Init dependencies
+	mongodb.InitConnextion()
+
 	service := service.NewUserDomainService()
 	userController := controller.NewUserController(service)
 
