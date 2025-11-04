@@ -2,25 +2,33 @@ package mongodb
 
 import (
 	"context"
+	"os"
 	"time"
 
-	"github.com/dlima78/gocourse/src/configuration/logger"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
-func InitConnextion() {
-	client, err := mongo.Connect(options.Client().ApplyURI("mongodb://localhost:27017"))
+var (
+	MONGODB_URL     = "MONGODB_URL"
+	MONGODB_CRUD_DB = "MONGODB_CRUD_DB"
+)
+
+func NewMongoDBConnection(ctx context.Context) (*mongo.Database, error) {
+	mongodb_uri := os.Getenv(MONGODB_URL)
+	mongodb_database := os.Getenv(MONGODB_CRUD_DB)
+
+	client, err := mongo.Connect(options.Client().ApplyURI(mongodb_uri))
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
 	if err := client.Ping(ctx, nil); err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	logger.Info("CONNECTED ON MONGODB")
+	return client.Database(mongodb_database), nil
 }

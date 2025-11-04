@@ -2,11 +2,13 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/dlima78/gocourse/src/configuration/database/mongodb"
 	"github.com/dlima78/gocourse/src/controller"
 	"github.com/dlima78/gocourse/src/controller/routes"
+	"github.com/dlima78/gocourse/src/model/repository"
 	"github.com/dlima78/gocourse/src/model/service"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -18,9 +20,14 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	mongodb.InitConnextion()
+	database, err := mongodb.NewMongoDBConnection(context.Background())
+	if err != nil {
+		log.Fatalf("Error trying to connect database, error=%s\n", err)
+		return
+	}
 
-	service := service.NewUserDomainService()
+	repo := repository.NewUserRepository(database)
+	service := service.NewUserDomainService(repo)
 	userController := controller.NewUserController(service)
 
 	router := gin.Default()
