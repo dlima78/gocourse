@@ -33,7 +33,7 @@ func main() {
 	router := gin.Default()
 	routes.InitRoutes(&router.RouterGroup, userController)
 
-	if err := router.Run(":8080"); err != nil {
+	if err := router.Run(":8081"); err != nil {
 		log.Fatal(err)
 	}
 }

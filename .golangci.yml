@@ -1,0 +1,44 @@
+linters-settings:
+  unused:
+    enabled: true
+    
+  govet:
+    enabled: true
+    
+  # Detectar imports não usados
+  goimports:
+    enabled: true
+    local-prefixes: github.com/dlima78/gocourse
+  
+  # Lint para naming conventions
+  golint:
+    enabled: true
+  
+  # Detectar erros comuns
+  errcheck:
+    enabled: true
+    check-blank: true
+
+linters:
+  enable:
+    - errcheck
+    - goimports
+    - govet
+    - unused
+    - ineffassign
+    - misspell
+    - vet
+
+issues:
+  include-go-stdlib: true
+  
+  # Regras customizadas para evitar o erro de mongo-driver
+  exclude-rules:
+    # Permitir imports v2 do mongo-driver
+    - path: src/model/repository
+      linters:
+        - unused
+    
+  # Falhar se encontrar imports v1 do mongo-driver
+  include:
+    - '.*bson/primitive.*'

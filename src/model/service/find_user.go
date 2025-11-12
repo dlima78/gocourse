@@ -7,9 +7,15 @@ import (
 	"go.uber.org/zap"
 )
 
-func (ud *userDomainService) FindUser(userID string) (
-	*model.UserDomainInterface, *rest_err.RestErr) {
-	logger.Info("Init find user model", zap.String("journey", "findUser"))
+func (ud *userDomainService) FindUserByEmailService(email string) (
+	model.UserDomainInterface, *rest_err.RestErr) {
+	logger.Info("Init find findUserByEmailService service", zap.String("journey", "findUserByEmailService"))
 
-	return nil, nil
+	return ud.userRepository.FindUserByEmail(email)
+}
+func (ud *userDomainService) FindUserByIDService(id string) (
+	model.UserDomainInterface, *rest_err.RestErr) {
+	logger.Info("Init find findUserByIDService service", zap.String("journey", "findUserByIDService"))
+
+	return ud.userRepository.FindUserByID(id)
 }
