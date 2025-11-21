@@ -1,11 +1,13 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"net/mail"
 
 	rest_err "github.com/dlima78/gocourse/src/configuration"
 	"github.com/dlima78/gocourse/src/configuration/logger"
+	"github.com/dlima78/gocourse/src/model"
 	"github.com/dlima78/gocourse/src/view"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -16,6 +18,17 @@ import (
 func (uc *userControllerInterface) FindUserByID(c *gin.Context) {
 	logger.Info("Init findUserByID controller",
 		zap.String("journey", "findUserByID"),
+	)
+
+	user, err := model.VerifyToken(c.Request.Header.Get("Authorization"))
+
+	if err != nil {
+		c.JSON(err.Code, err)
+		return
+	}
+
+	logger.Info(fmt.Sprintf("User authenticated: %#v", user),
+		zap.String("journey", "loginUser"),
 	)
 
 	userId := c.Param("userId")
@@ -53,6 +66,17 @@ func (uc *userControllerInterface) FindUserByID(c *gin.Context) {
 
 func (uc *userControllerInterface) FindUserByEmail(c *gin.Context) {
 	logger.Info("Init findUserByEmail controller", zap.String("journey", "FindUserByEmail"))
+
+	user, err := model.VerifyToken(c.Request.Header.Get("Authorization"))
+
+	if err != nil {
+		c.JSON(err.Code, err)
+		return
+	}
+
+	logger.Info(fmt.Sprintf("User authenticated: %#v", user),
+		zap.String("journey", "loginUser"),
+	)
 
 	userEmail := c.Param("userEmail")
 	if _, err := mail.ParseAddress(userEmail); err != nil {

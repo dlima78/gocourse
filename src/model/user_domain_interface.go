@@ -1,5 +1,7 @@
 package model
 
+import rest_err "github.com/dlima78/gocourse/src/configuration"
+
 type UserDomainInterface interface {
 	GetEmail() string
 	GetPassword() string
@@ -8,6 +10,7 @@ type UserDomainInterface interface {
 	GetID() string
 	SetID(string)
 	EncryptPassword()
+	GenerateToken() (string, *rest_err.RestErr)
 }
 
 func NewUserDomain(email, password, name string, age int8) UserDomainInterface {
@@ -16,4 +19,8 @@ func NewUserDomain(email, password, name string, age int8) UserDomainInterface {
 
 func NewUserUpdateDomain(name string, age int8) UserDomainInterface {
 	return &userDomain{name: name, age: age}
+}
+
+func NewUserLoginDomain(email, password string) UserDomainInterface {
+	return &userDomain{email: email, password: password}
 }
