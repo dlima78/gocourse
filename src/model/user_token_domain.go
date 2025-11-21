@@ -7,6 +7,8 @@ import (
 	"time"
 
 	rest_err "github.com/dlima78/gocourse/src/configuration"
+	"github.com/dlima78/gocourse/src/configuration/logger"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -37,9 +39,11 @@ func (ud *userDomain) GenerateToken() (string, *rest_err.RestErr) {
 	return tokenString, nil
 }
 
-func VerifyToken(tokenString string) (UserDomainInterface, *rest_err.RestErr) {
+func VerifyTokenMiddleware(c *gin.Context) {
 	secret := os.Getenv(JWT_SECRET_KEY)
-	token, err := jwt.Parse(RemoveBearerPrefix(tokenString), func(t *jwt.Token) (any, error) {
+	tokenValue := RemoveBearerPrefix(c.Request.Header.Get("Authorization"))
+
+	token, err := jwt.Parse(tokenValue, func(t *jwt.Token) (any, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); ok {
 			return []byte(secret), nil
 		}
@@ -47,20 +51,28 @@ func VerifyToken(tokenString string) (UserDomainInterface, *rest_err.RestErr) {
 	})
 
 	if err != nil {
-		return nil, rest_err.NewUnauthorizedError("invalid token")
+		errRest := rest_err.NewUnauthorizedError("invalid token")
+		c.JSON(errRest.Code, errRest)
+		c.Abort()
+		return
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok || !token.Valid {
-		return nil, rest_err.NewUnauthorizedError("invalid token")
+		errRest := rest_err.NewUnauthorizedError("invalid token")
+		c.JSON(errRest.Code, errRest)
+		c.Abort()
+		return
 	}
 
-	return &userDomain{
+	userDomain := userDomain{
 		id:    claims["id"].(string),
 		email: claims["email"].(string),
 		name:  claims["name"].(string),
 		age:   int8(claims["age"].(float64)),
-	}, nil
+	}
+
+	logger.Info(fmt.Sprintf("User authenticated %#v", userDomain))
 }
 
 func RemoveBearerPrefix(token string) string {
