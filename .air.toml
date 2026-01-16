@@ -27,6 +27,9 @@ tmp_dir = "tmp"
   send_interrupt = false
   stop_on_error = false
 
+[test:watch]
+  air -- test ./src/model/repository -v
+
 [color]
   app = ""
   build = "yellow"

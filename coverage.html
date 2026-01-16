@@ -1,0 +1,1269 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>mongodb: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/dlima78/gocourse/src/configuration/database/mongodb/mongodb_connection.go (0.0%)</option>
+				
+				<option value="file1">github.com/dlima78/gocourse/src/configuration/logger/logger.go (0.0%)</option>
+				
+				<option value="file2">github.com/dlima78/gocourse/src/configuration/mongo_types.go (0.0%)</option>
+				
+				<option value="file3">github.com/dlima78/gocourse/src/configuration/rest_err.go (0.0%)</option>
+				
+				<option value="file4">github.com/dlima78/gocourse/src/configuration/validation/validation_user.go (0.0%)</option>
+				
+				<option value="file5">github.com/dlima78/gocourse/src/controller/create_user.go (0.0%)</option>
+				
+				<option value="file6">github.com/dlima78/gocourse/src/controller/delete_user.go (0.0%)</option>
+				
+				<option value="file7">github.com/dlima78/gocourse/src/controller/find_user.go (0.0%)</option>
+				
+				<option value="file8">github.com/dlima78/gocourse/src/controller/login_user.go (0.0%)</option>
+				
+				<option value="file9">github.com/dlima78/gocourse/src/controller/routes/routes.go (0.0%)</option>
+				
+				<option value="file10">github.com/dlima78/gocourse/src/controller/update_user.go (0.0%)</option>
+				
+				<option value="file11">github.com/dlima78/gocourse/src/controller/user_controller.go (0.0%)</option>
+				
+				<option value="file12">github.com/dlima78/gocourse/src/model/repository/entity/converter/convert_domain_to_entity.go (0.0%)</option>
+				
+				<option value="file13">github.com/dlima78/gocourse/src/model/repository/entity/converter/convert_entity_to_domain.go (0.0%)</option>
+				
+				<option value="file14">github.com/dlima78/gocourse/src/model/service/create_user.go (100.0%)</option>
+				
+				<option value="file15">github.com/dlima78/gocourse/src/model/service/delete_user.go (100.0%)</option>
+				
+				<option value="file16">github.com/dlima78/gocourse/src/model/service/find_user.go (66.7%)</option>
+				
+				<option value="file17">github.com/dlima78/gocourse/src/model/service/mocks/mock_user_repository.go (0.0%)</option>
+				
+				<option value="file18">github.com/dlima78/gocourse/src/model/service/update_user.go (100.0%)</option>
+				
+				<option value="file19">github.com/dlima78/gocourse/src/model/service/user_interface.go (100.0%)</option>
+				
+				<option value="file20">github.com/dlima78/gocourse/src/model/service/user_login.go (0.0%)</option>
+				
+				<option value="file21">github.com/dlima78/gocourse/src/model/user_domain.go (0.0%)</option>
+				
+				<option value="file22">github.com/dlima78/gocourse/src/model/user_domain_interface.go (0.0%)</option>
+				
+				<option value="file23">github.com/dlima78/gocourse/src/model/user_domain_password.go (0.0%)</option>
+				
+				<option value="file24">github.com/dlima78/gocourse/src/model/user_token_domain.go (0.0%)</option>
+				
+				<option value="file25">github.com/dlima78/gocourse/src/view/convert_domain_to_response.go (0.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package mongodb
+
+import (
+        "context"
+        "os"
+        "time"
+
+        "go.mongodb.org/mongo-driver/v2/mongo"
+        "go.mongodb.org/mongo-driver/v2/mongo/options"
+)
+
+var (
+        MONGODB_URL     = "MONGODB_URL"
+        MONGODB_CRUD_DB = "MONGODB_CRUD_DB"
+)
+
+func NewMongoDBConnection(ctx context.Context) (*mongo.Database, error) <span class="cov0" title="0">{
+        mongodb_uri := os.Getenv(MONGODB_URL)
+        mongodb_database := os.Getenv(MONGODB_CRUD_DB)
+
+        client, err := mongo.Connect(options.Client().ApplyURI(mongodb_uri))
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+        defer cancel()
+
+        if err := client.Ping(ctx, nil); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return client.Database(mongodb_database), nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package logger
+
+import (
+        "os"
+        "strings"
+
+        "go.uber.org/zap"
+        "go.uber.org/zap/zapcore"
+)
+
+var (
+        log *zap.Logger
+
+        LOG_OUTPUT = "LOG_OUTPUT"
+        LOG_LEVEL  = "LOG_LEVEL"
+)
+
+func init() <span class="cov0" title="0">{
+        logConfiguration := zap.Config{
+                OutputPaths: []string{getOutputLogs()},
+                Level:       zap.NewAtomicLevelAt(getLevelLogs()),
+                Encoding:    "json",
+                EncoderConfig: zapcore.EncoderConfig{
+                        LevelKey:     "level",
+                        TimeKey:      "time",
+                        MessageKey:   "message",
+                        EncodeTime:   zapcore.ISO8601TimeEncoder,
+                        EncodeLevel:  zapcore.LowercaseLevelEncoder,
+                        EncodeCaller: zapcore.ShortCallerEncoder,
+                },
+        }
+
+        log, _ = logConfiguration.Build()
+}</span>
+
+func Info(message string, tags ...zap.Field) <span class="cov0" title="0">{
+        log.Info(message, tags...)
+        log.Sync()
+}</span>
+
+func Error(message string, err error, tags ...zap.Field) <span class="cov0" title="0">{
+        tags = append(tags, zap.NamedError("error", err))
+        log.Info(message, tags...)
+        log.Sync()
+}</span>
+
+func getOutputLogs() string <span class="cov0" title="0">{
+        output := strings.ToLower(strings.TrimSpace(os.Getenv(LOG_OUTPUT)))
+        if output == "" </span><span class="cov0" title="0">{
+                return "stdout"
+        }</span>
+        <span class="cov0" title="0">return output</span>
+}
+
+func getLevelLogs() zapcore.Level <span class="cov0" title="0">{
+        switch strings.ToLower(strings.TrimSpace(os.Getenv(LOG_LEVEL))) </span>{
+        case "info":<span class="cov0" title="0">
+                return zapcore.InfoLevel</span>
+        case "error":<span class="cov0" title="0">
+                return zapcore.ErrorLevel</span>
+        case "debug":<span class="cov0" title="0">
+                return zapcore.DebugLevel</span>
+        default:<span class="cov0" title="0">
+                return zapcore.InfoLevel</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package rest_err
+
+import "go.mongodb.org/mongo-driver/v2/bson"
+
+// ObjectID é o tipo padrão para IDs do MongoDB
+//
+// IMPORTANTE: Sempre use este tipo ao invés de primitive.ObjectID
+// Use bson.ObjectIDFromHex(hexString) para converter de string
+type ObjectID = bson.ObjectID
+
+// D é o tipo padrão para documentos BSON
+type D = bson.D
+
+// E é o tipo padrão para elementos BSON
+type E = bson.E
+
+// NewObjectIDFromHex converte uma string hex para ObjectID
+//
+// Exemplo:
+//
+//        oid, err := NewObjectIDFromHex("507f1f77bcf86cd799439011")
+func NewObjectIDFromHex(hex string) (ObjectID, error) <span class="cov0" title="0">{
+        return bson.ObjectIDFromHex(hex)
+}</span>
+
+// NewObjectID gera um novo ObjectID único
+func NewObjectID() ObjectID <span class="cov0" title="0">{
+        return bson.NewObjectID()
+}</span>
+
+// IsValidObjectID verifica se uma string é um ObjectID válido
+func IsValidObjectID(hex string) bool <span class="cov0" title="0">{
+        _, err := bson.ObjectIDFromHex(hex)
+        return err == nil
+}</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package rest_err
+
+import (
+        "net/http"
+)
+
+type RestErr struct {
+        Message string   `json:"message"`
+        Err     string   `json:"error"`
+        Code    int      `json:"code"`
+        Causes  []Causes `json:"causes,omitempty"`
+}
+
+type Causes struct {
+        Field   string `json:"field"`
+        Message string `json:"message"`
+}
+
+func (r *RestErr) Error() string <span class="cov0" title="0">{
+        return r.Message
+}</span>
+
+func NewRestErr(message, err string, code int, causes []Causes) *RestErr <span class="cov0" title="0">{
+        return &amp;RestErr{
+                Message: message,
+                Err:     err,
+                Code:    code,
+                Causes:  causes,
+        }
+}</span>
+
+func NewBadRequestError(message string) *RestErr <span class="cov0" title="0">{
+        return &amp;RestErr{
+                Message: message,
+                Err:     "bad_request",
+                Code:    http.StatusBadRequest,
+        }
+}</span>
+
+func NewBadRequestValidationError(message string, causes []Causes) *RestErr <span class="cov0" title="0">{
+        return &amp;RestErr{
+                Message: message,
+                Err:     "bad_request",
+                Code:    http.StatusBadRequest,
+                Causes:  causes,
+        }
+}</span>
+
+func NewInternalServerError(message string) *RestErr <span class="cov0" title="0">{
+        return &amp;RestErr{
+                Message: message,
+                Err:     "internal_server_error",
+                Code:    http.StatusInternalServerError,
+        }
+}</span>
+
+func NewNotFoundError(message string) *RestErr <span class="cov0" title="0">{
+        return &amp;RestErr{
+                Message: message,
+                Err:     "not_found_error",
+                Code:    http.StatusNotFound,
+        }
+}</span>
+
+func NewForbiddenError(message string) *RestErr <span class="cov0" title="0">{
+        return &amp;RestErr{
+                Message: message,
+                Err:     "forbidden_error",
+                Code:    http.StatusForbidden,
+        }
+}</span>
+func NewUnauthorizedError(message string) *RestErr <span class="cov0" title="0">{
+        return &amp;RestErr{
+                Message: message,
+                Err:     "unauthorized_error",
+                Code:    http.StatusUnauthorized,
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package validation
+
+import (
+        "encoding/json"
+        "errors"
+
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/gin-gonic/gin/binding"
+        "github.com/go-playground/locales/en"
+        ut "github.com/go-playground/universal-translator"
+        "github.com/go-playground/validator/v10"
+        en_translation "github.com/go-playground/validator/v10/translations/en"
+)
+
+var (
+        Validate = validator.New()
+        transl   ut.Translator
+)
+
+func init() <span class="cov0" title="0">{
+        if val, ok := binding.Validator.Engine().(*validator.Validate); ok </span><span class="cov0" title="0">{
+                en := en.New()
+                unt := ut.New(en, en)
+                transl, _ = unt.GetTranslator("en")
+                en_translation.RegisterDefaultTranslations(val, transl)
+        }</span>
+}
+
+func ValidateUserError(validation_err error) *rest_err.RestErr <span class="cov0" title="0">{
+        var jsonErr *json.UnmarshalTypeError
+        var jsonValidationError validator.ValidationErrors
+
+        if errors.As(validation_err, &amp;jsonErr) </span><span class="cov0" title="0">{
+                return rest_err.NewBadRequestError("Invalid field type")
+        }</span> else<span class="cov0" title="0"> if errors.As(validation_err, &amp;jsonValidationError) </span><span class="cov0" title="0">{
+                errorsCauses := []rest_err.Causes{}
+
+                for _, e := range validation_err.(validator.ValidationErrors) </span><span class="cov0" title="0">{
+                        cause := rest_err.Causes{
+                                Message: e.Translate(transl),
+                                Field:   e.Field(),
+                        }
+                        errorsCauses = append(errorsCauses, cause)
+                }</span>
+                <span class="cov0" title="0">return rest_err.NewBadRequestValidationError("Some fields are invalid", errorsCauses)</span>
+        } else<span class="cov0" title="0"> {
+                return rest_err.NewBadRequestError("Error trying to convert fields")
+        }</span>
+
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package controller
+
+import (
+        "net/http"
+
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/dlima78/gocourse/src/configuration/validation"
+        "github.com/dlima78/gocourse/src/controller/model/request"
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/dlima78/gocourse/src/view"
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+var (
+        UserDomainInterface model.UserDomainInterface
+)
+
+func (uc *userControllerInterface) CreateUser(c *gin.Context) <span class="cov0" title="0">{
+        logger.Info("About to start user application",
+                zap.String("journey", "createUser"),
+        )
+        var userRequest request.UserRequest
+
+        if err := c.ShouldBindJSON(&amp;userRequest); err != nil </span><span class="cov0" title="0">{
+                logger.Error("Error trying to validate user info,", err,
+                        zap.String("journey", "createUser"))
+                restErr := validation.ValidateUserError(err)
+
+                c.JSON(restErr.Code, restErr)
+                return
+        }</span>
+
+        <span class="cov0" title="0">domain := model.NewUserDomain(
+                userRequest.Email,
+                userRequest.Password,
+                userRequest.Name,
+                userRequest.Age,
+        )
+
+        domainResult, err := uc.service.CreateUserService(domain)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Error(
+                        "Error trying to call CreateUser service",
+                        err,
+                        zap.String("journey", "createUser"))
+                c.JSON(err.Code, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">logger.Info(
+                "CreateUser controller executed successfully",
+                zap.String("userId", domainResult.GetID()),
+                zap.String("journey", "createUser"),
+        )
+
+        c.JSON(http.StatusOK, view.ConvertDomainToResponse(domainResult))</span>
+
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package controller
+
+import (
+        "net/http"
+
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+func (uc *userControllerInterface) DeleteUser(c *gin.Context) <span class="cov0" title="0">{
+        logger.Info("Init deleteUser controller",
+                zap.String("journey", "deleteUser"),
+        )
+        userId := c.Param("userId")
+
+        err := uc.service.DeleteUserService(userId)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Error(
+                        "Error trying to call DeleteUser service",
+                        err,
+                        zap.String("journey", "deleteUser"))
+                c.JSON(err.Code, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">logger.Info(
+                "DeleteUser controller executed successfully",
+                zap.String("userId", userId),
+                zap.String("journey", "deleteUser"),
+        )
+
+        c.Status(http.StatusOK)</span>
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package controller
+
+import (
+        "net/http"
+        "net/mail"
+
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/dlima78/gocourse/src/view"
+        "github.com/gin-gonic/gin"
+        "go.mongodb.org/mongo-driver/v2/bson"
+
+        "go.uber.org/zap"
+)
+
+func (uc *userControllerInterface) FindUserByID(c *gin.Context) <span class="cov0" title="0">{
+        logger.Info("Init findUserByID controller",
+                zap.String("journey", "findUserByID"),
+        )
+
+        userId := c.Param("userId")
+
+        if _, err := bson.ObjectIDFromHex(userId); err != nil </span><span class="cov0" title="0">{
+                logger.Error("Error trying to validate userId",
+                        err,
+                        zap.String("journey", "findUserByID"),
+                )
+                errorMessage := rest_err.NewBadRequestError(
+                        "UserID is not a valid id",
+                )
+
+                c.JSON(errorMessage.Code, errorMessage)
+                return
+        }</span>
+
+        <span class="cov0" title="0">userDomain, err := uc.service.FindUserByIDService(userId)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Error("Error trying to call findUserByID services",
+                        err,
+                        zap.String("journey", "findUserByID"),
+                )
+                c.JSON(err.Code, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">logger.Info("FindUserByID controller executed successfully",
+                zap.String("journey", "findUserByID"),
+        )
+        c.JSON(http.StatusOK, view.ConvertDomainToResponse(
+                userDomain,
+        ))</span>
+}
+
+func (uc *userControllerInterface) FindUserByEmail(c *gin.Context) <span class="cov0" title="0">{
+        logger.Info("Init findUserByEmail controller", zap.String("journey", "FindUserByEmail"))
+
+        userEmail := c.Param("userEmail")
+        if _, err := mail.ParseAddress(userEmail); err != nil </span><span class="cov0" title="0">{
+                logger.Error("Error trying to validate userEmail", err, zap.String("journey", "FindUserByEmail"))
+                errorMessage := rest_err.NewBadRequestError("UserEmail is not a valid email")
+
+                c.JSON(errorMessage.Code, errorMessage)
+                return
+        }</span>
+
+        <span class="cov0" title="0">userDomain, err := uc.service.FindUserByEmailService(userEmail)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Error("Error trying to find user by Email", err, zap.String("journey", "FindUserByEmail"))
+                c.JSON(err.Code, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">logger.Info(
+                "FindUserByEmail controller executed successfully",
+                zap.String("journey", "FindUserByEmail"),
+        )
+
+        c.JSON(http.StatusOK, view.ConvertDomainToResponse(userDomain))</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package controller
+
+import (
+        "net/http"
+
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/dlima78/gocourse/src/configuration/validation"
+        "github.com/dlima78/gocourse/src/controller/model/request"
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/dlima78/gocourse/src/view"
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+func (uc *userControllerInterface) LoginUser(c *gin.Context) <span class="cov0" title="0">{
+        logger.Info("Init login user application",
+                zap.String("journey", "loginUser"),
+        )
+        var userLoginRequest request.UserLoginRequest
+
+        if err := c.ShouldBindJSON(&amp;userLoginRequest); err != nil </span><span class="cov0" title="0">{
+                logger.Error("Error trying to validate user info,", err,
+                        zap.String("journey", "loginUser"))
+                restErr := validation.ValidateUserError(err)
+
+                c.JSON(restErr.Code, restErr)
+                return
+        }</span>
+
+        <span class="cov0" title="0">domain := model.NewUserLoginDomain(
+                userLoginRequest.Email,
+                userLoginRequest.Password,
+        )
+
+        domainResult, token, err := uc.service.LoginUserService(domain)
+
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Error(
+                        "Error trying to call CreateUser service",
+                        err,
+                        zap.String("journey", "createUser"))
+                c.JSON(err.Code, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">logger.Info(
+                "CreateUser controller executed successfully",
+                zap.String("userId", domainResult.GetID()),
+                zap.String("journey", "createUser"),
+        )
+
+        c.Header("Authorization", token)
+
+        c.JSON(http.StatusOK, view.ConvertDomainToResponse(domainResult))</span>
+
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package routes
+
+import (
+        "github.com/dlima78/gocourse/src/controller"
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/gin-gonic/gin"
+)
+
+func InitRoutes(r *gin.RouterGroup, userController controller.UserControllerInterface) <span class="cov0" title="0">{
+        r.GET("/getUserById/:userId", model.VerifyTokenMiddleware, userController.FindUserByID)
+        r.GET("/getUserByEmail/:userEmail", model.VerifyTokenMiddleware, userController.FindUserByEmail)
+        r.POST("/createUser", userController.CreateUser)
+        r.POST("/login", userController.LoginUser)
+        r.PUT("/updateUser/:userId", userController.UpdateUser)
+        r.DELETE("/deleteUser/:userId", userController.DeleteUser)
+}</span>
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package controller
+
+import (
+        "net/http"
+        "strings"
+
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/dlima78/gocourse/src/configuration/validation"
+        "github.com/dlima78/gocourse/src/controller/model/request"
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+func (uc *userControllerInterface) UpdateUser(c *gin.Context) <span class="cov0" title="0">{
+        logger.Info("About to start user application",
+                zap.String("journey", "updateUser"),
+        )
+        var userUpdateRequest request.UserUpdateRequest
+
+        userId := c.Param("userId")
+
+        if err := c.ShouldBindJSON(&amp;userUpdateRequest); err != nil ||
+                strings.TrimSpace(userId) == "" </span><span class="cov0" title="0">{
+                logger.Error("Error trying to validate user info,", err,
+                        zap.String("journey", "updateUser"))
+                restErr := validation.ValidateUserError(err)
+
+                c.JSON(restErr.Code, restErr)
+                return
+        }</span>
+
+        <span class="cov0" title="0">domain := model.NewUserUpdateDomain(
+                userUpdateRequest.Name,
+                userUpdateRequest.Age,
+        )
+
+        err := uc.service.UpdateUserService(userId, domain)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Error(
+                        "Error trying to call UpdateUser service",
+                        err,
+                        zap.String("journey", "updateUser"))
+                c.JSON(err.Code, err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">logger.Info(
+                "UpdateUser controller executed successfully",
+                zap.String("userId", userId),
+                zap.String("journey", "updateUser"),
+        )
+
+        c.Status(http.StatusOK)</span>
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package controller
+
+import (
+        "github.com/dlima78/gocourse/src/model/service"
+        "github.com/gin-gonic/gin"
+)
+
+func NewUserController(service service.UserDomainService) UserControllerInterface <span class="cov0" title="0">{
+        return &amp;userControllerInterface{
+                service: service,
+        }
+}</span>
+
+type UserControllerInterface interface {
+        UpdateUser(c *gin.Context)
+        DeleteUser(c *gin.Context)
+        CreateUser(c *gin.Context)
+        FindUserByEmail(c *gin.Context)
+        FindUserByID(c *gin.Context)
+        LoginUser(c *gin.Context)
+}
+
+type userControllerInterface struct {
+        service service.UserDomainService
+}
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">package converter
+
+import (
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/dlima78/gocourse/src/model/repository/entity"
+)
+
+func ConvertDomainToEntity(domain model.UserDomainInterface) *entity.UserEntity <span class="cov0" title="0">{
+        return &amp;entity.UserEntity{
+                Email:    domain.GetEmail(),
+                Password: domain.GetPassword(),
+                Name:     domain.GetName(),
+                Age:      domain.GetAge(),
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package converter
+
+import (
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/dlima78/gocourse/src/model/repository/entity"
+)
+
+func ConvertEntityToDomain(entity entity.UserEntity) model.UserDomainInterface <span class="cov0" title="0">{
+        domain := model.NewUserDomain(
+                entity.Email,
+                entity.Password,
+                entity.Name,
+                entity.Age,
+        )
+
+        domain.SetID(entity.ID.Hex())
+        return domain
+}</span>
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">package service
+
+import (
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/dlima78/gocourse/src/model"
+        "go.uber.org/zap"
+)
+
+func (ud *userDomainService) CreateUserService(userDomain model.UserDomainInterface) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov8" title="1">{
+        logger.Info("Init create user model", zap.String("journey", "createUser"))
+
+        userDomain.EncryptPassword()
+
+        user, _ := ud.userRepository.FindUserByEmail(userDomain.GetEmail())
+        if user != nil </span><span class="cov8" title="1">{
+                logger.Error("Email already exists", nil, zap.String("journey", "createUser"))
+                return nil, rest_err.NewBadRequestError("Email already exists")
+        }</span>
+
+        <span class="cov8" title="1">userDomainRepository, err := ud.userRepository.CreateUser(userDomain)
+        if err != nil </span><span class="cov8" title="1">{
+                logger.Error("Error trying to call repository", err, zap.String("journey", "createUser"))
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">logger.Info(
+                "createUser service executed successfully",
+                zap.String("userId", userDomainRepository.GetID()),
+                zap.String("journey", "createUser"),
+        )
+
+        return userDomainRepository, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package service
+
+import (
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "go.uber.org/zap"
+)
+
+func (ud *userDomainService) DeleteUserService(userID string) *rest_err.RestErr <span class="cov8" title="1">{
+        logger.Info("Init delete user model", zap.String("journey", "deleteUser"))
+
+        err := ud.userRepository.DeleteUser(userID)
+        if err != nil </span><span class="cov8" title="1">{
+                logger.Error(
+                        "Error trying to delete user from database",
+                        err,
+                        zap.String("journey", "deleteUser"))
+                return err
+        }</span>
+
+        <span class="cov8" title="1">logger.Info("Delete user model executed successfully", zap.String("journey", "deleteUser"))
+
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package service
+
+import (
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/dlima78/gocourse/src/model"
+        "go.uber.org/zap"
+)
+
+func (ud *userDomainService) FindUserByEmailService(email string) (
+        model.UserDomainInterface, *rest_err.RestErr) <span class="cov8" title="1">{
+        logger.Info("Init find findUserByEmailService service", zap.String("journey", "findUserByEmailService"))
+
+        return ud.userRepository.FindUserByEmail(email)
+}</span>
+func (ud *userDomainService) FindUserByIDService(id string) (
+        model.UserDomainInterface, *rest_err.RestErr) <span class="cov8" title="1">{
+        logger.Info("Init find findUserByIDService service", zap.String("journey", "findUserByIDService"))
+
+        return ud.userRepository.FindUserByID(id)
+}</span>
+
+func (ud *userDomainService) findUserByEmailAndPasswordService(email, password string) (
+        model.UserDomainInterface, *rest_err.RestErr) <span class="cov0" title="0">{
+        logger.Info("Init find findUserByEmailAndPasswordService service", zap.String("journey", "findUserByEmailAndPasswordService"))
+
+        return ud.userRepository.FindUserByEmailAndPassword(email, password)
+}</span>
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">package mock_user_repository
+
+import (
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/stretchr/testify/mock"
+)
+
+type MockUserRepository struct {
+        mock.Mock
+}
+
+func (m *MockUserRepository) CreateUser(user model.UserDomainInterface) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov0" title="0">{
+        args := m.Called(user)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                if args.Get(1) == nil </span><span class="cov0" title="0">{
+                        return nil, nil
+                }</span>
+                <span class="cov0" title="0">return nil, args.Get(1).(*rest_err.RestErr)</span>
+        }
+        <span class="cov0" title="0">if args.Get(1) == nil </span><span class="cov0" title="0">{
+                return args.Get(0).(model.UserDomainInterface), nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(model.UserDomainInterface), args.Get(1).(*rest_err.RestErr)</span>
+}
+
+func (m *MockUserRepository) FindUserByEmail(email string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov0" title="0">{
+        args := m.Called(email)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                if args.Get(1) == nil </span><span class="cov0" title="0">{
+                        return nil, nil
+                }</span>
+                <span class="cov0" title="0">return nil, args.Get(1).(*rest_err.RestErr)</span>
+        }
+        <span class="cov0" title="0">if args.Get(1) == nil </span><span class="cov0" title="0">{
+                return args.Get(0).(model.UserDomainInterface), nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(model.UserDomainInterface), args.Get(1).(*rest_err.RestErr)</span>
+}
+
+func (m *MockUserRepository) FindUserByID(id string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov0" title="0">{
+        args := m.Called(id)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                if args.Get(1) == nil </span><span class="cov0" title="0">{
+                        return nil, nil
+                }</span>
+                <span class="cov0" title="0">return nil, args.Get(1).(*rest_err.RestErr)</span>
+        }
+        <span class="cov0" title="0">if args.Get(1) == nil </span><span class="cov0" title="0">{
+                return args.Get(0).(model.UserDomainInterface), nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(model.UserDomainInterface), args.Get(1).(*rest_err.RestErr)</span>
+}
+
+func (m *MockUserRepository) UpdateUser(id string, user model.UserDomainInterface) *rest_err.RestErr <span class="cov0" title="0">{
+        args := m.Called(id, user)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(*rest_err.RestErr)</span>
+}
+
+func (m *MockUserRepository) DeleteUser(id string) *rest_err.RestErr <span class="cov0" title="0">{
+        args := m.Called(id)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(*rest_err.RestErr)</span>
+}
+
+func (m *MockUserRepository) LoginUser(user model.UserDomainInterface) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov0" title="0">{
+        args := m.Called(user)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                if args.Get(1) == nil </span><span class="cov0" title="0">{
+                        return nil, nil
+                }</span>
+                <span class="cov0" title="0">return nil, args.Get(1).(*rest_err.RestErr)</span>
+        }
+        <span class="cov0" title="0">if args.Get(1) == nil </span><span class="cov0" title="0">{
+                return args.Get(0).(model.UserDomainInterface), nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(model.UserDomainInterface), args.Get(1).(*rest_err.RestErr)</span>
+}
+
+func (m *MockUserRepository) FindUserByEmailAndPassword(email, password string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov0" title="0">{
+        args := m.Called(email, password)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                if args.Get(1) == nil </span><span class="cov0" title="0">{
+                        return nil, nil
+                }</span>
+                <span class="cov0" title="0">return nil, args.Get(1).(*rest_err.RestErr)</span>
+        }
+        <span class="cov0" title="0">if args.Get(1) == nil </span><span class="cov0" title="0">{
+                return args.Get(0).(model.UserDomainInterface), nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(model.UserDomainInterface), args.Get(1).(*rest_err.RestErr)</span>
+}
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package service
+
+import (
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/dlima78/gocourse/src/model"
+        "go.uber.org/zap"
+)
+
+func (ud *userDomainService) UpdateUserService(userID string, userDomain model.UserDomainInterface) *rest_err.RestErr <span class="cov8" title="1">{
+        logger.Info("Init update user model", zap.String("journey", "updateUser"))
+
+        // Verificar se o usuário existe
+        _, findErr := ud.userRepository.FindUserByID(userID)
+        if findErr != nil </span><span class="cov8" title="1">{
+                logger.Error("User not found or error on find", findErr, zap.String("journey", "updateUser"))
+                return findErr
+        }</span>
+
+        <span class="cov8" title="1">err := ud.userRepository.UpdateUser(userID, userDomain)
+        if err != nil </span><span class="cov8" title="1">{
+                logger.Error("Error trying to call repository",
+                        err,
+                        zap.String("journey", "updateUser"))
+                return err
+        }</span>
+
+        <span class="cov8" title="1">logger.Info(
+                "updateUser service executed successfully",
+                zap.String("userId", userID),
+                zap.String("journey", "updateUser"),
+        )
+
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">package service
+
+import (
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/dlima78/gocourse/src/model/repository"
+)
+
+func NewUserDomainService(userRepository repository.UserRepository) UserDomainService <span class="cov8" title="1">{
+        return &amp;userDomainService{userRepository}
+}</span>
+
+type userDomainService struct {
+        userRepository repository.UserRepository
+}
+
+type UserDomainService interface {
+        CreateUserService(model.UserDomainInterface) (model.UserDomainInterface, *rest_err.RestErr)
+        UpdateUserService(string, model.UserDomainInterface) *rest_err.RestErr
+        FindUserByEmailService(email string) (model.UserDomainInterface, *rest_err.RestErr)
+        FindUserByIDService(id string) (model.UserDomainInterface, *rest_err.RestErr)
+        DeleteUserService(string) *rest_err.RestErr
+        LoginUserService(model.UserDomainInterface) (model.UserDomainInterface, string, *rest_err.RestErr)
+}
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">package service
+
+import (
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/dlima78/gocourse/src/model"
+        "go.uber.org/zap"
+)
+
+func (ud *userDomainService) LoginUserService(userDomain model.UserDomainInterface) (model.UserDomainInterface, string, *rest_err.RestErr) <span class="cov0" title="0">{
+        logger.Info("Init login user model", zap.String("journey", "loginUser"))
+
+        userDomain.EncryptPassword()
+
+        user, err := ud.findUserByEmailAndPasswordService(
+                userDomain.GetEmail(),
+                userDomain.GetPassword(),
+        )
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, "", err
+        }</span>
+
+        <span class="cov0" title="0">token, err := user.GenerateToken()
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, "", err
+        }</span>
+
+        <span class="cov0" title="0">logger.Info(
+                "loginUser service executed successfully",
+                zap.String("userId", user.GetID()),
+                zap.String("journey", "loginUser"),
+        )
+
+        return user, token, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file21" style="display: none">package model
+
+type userDomain struct {
+        id       string
+        email    string
+        password string
+        name     string
+        age      int8
+}
+
+func (ud *userDomain) SetID(id string) <span class="cov0" title="0">{
+        ud.id = id
+}</span>
+func (ud *userDomain) GetID() string <span class="cov0" title="0">{
+        return ud.id
+}</span>
+
+func (ud *userDomain) GetEmail() string <span class="cov0" title="0">{
+        return ud.email
+}</span>
+
+func (ud *userDomain) GetPassword() string <span class="cov0" title="0">{
+        return ud.password
+}</span>
+
+func (ud *userDomain) GetName() string <span class="cov0" title="0">{
+        return ud.name
+}</span>
+
+func (ud *userDomain) GetAge() int8 <span class="cov0" title="0">{
+        return ud.age
+}</span>
+</pre>
+		
+		<pre class="file" id="file22" style="display: none">package model
+
+import rest_err "github.com/dlima78/gocourse/src/configuration"
+
+type UserDomainInterface interface {
+        GetEmail() string
+        GetPassword() string
+        GetName() string
+        GetAge() int8
+        GetID() string
+        SetID(string)
+        EncryptPassword()
+        GenerateToken() (string, *rest_err.RestErr)
+}
+
+func NewUserDomain(email, password, name string, age int8) UserDomainInterface <span class="cov0" title="0">{
+        return &amp;userDomain{email: email, password: password, name: name, age: age}
+}</span>
+
+func NewUserUpdateDomain(name string, age int8) UserDomainInterface <span class="cov0" title="0">{
+        return &amp;userDomain{name: name, age: age}
+}</span>
+
+func NewUserLoginDomain(email, password string) UserDomainInterface <span class="cov0" title="0">{
+        return &amp;userDomain{email: email, password: password}
+}</span>
+</pre>
+		
+		<pre class="file" id="file23" style="display: none">package model
+
+import (
+        "crypto/md5"
+        "encoding/hex"
+)
+
+func (ud *userDomain) EncryptPassword() <span class="cov0" title="0">{
+        hash := md5.New()
+        defer hash.Reset()
+        hash.Write([]byte(ud.password))
+        ud.password = hex.EncodeToString(hash.Sum(nil))
+}</span>
+</pre>
+		
+		<pre class="file" id="file24" style="display: none">package model
+
+import (
+        "fmt"
+        "os"
+        "strings"
+        "time"
+
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/gin-gonic/gin"
+        "github.com/golang-jwt/jwt/v5"
+)
+
+var (
+        JWT_SECRET_KEY = "JWT_SECRET_KEY"
+)
+
+func (ud *userDomain) GenerateToken() (string, *rest_err.RestErr) <span class="cov0" title="0">{
+        secret := os.Getenv(JWT_SECRET_KEY)
+
+        claims := jwt.MapClaims{
+                "id":    ud.id,
+                "email": ud.email,
+                "name":  ud.name,
+                "age":   ud.age,
+                "exp":   time.Now().Add(time.Hour * 24).Unix(),
+        }
+
+        token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+        tokenString, err := token.SignedString([]byte(secret))
+        if err != nil </span><span class="cov0" title="0">{
+                errorMessage := "Error generating token"
+                return "", rest_err.NewInternalServerError(
+                        fmt.Sprintf("%s: %s", errorMessage, err.Error()),
+                )
+        }</span>
+        <span class="cov0" title="0">return tokenString, nil</span>
+}
+
+func VerifyTokenMiddleware(c *gin.Context) <span class="cov0" title="0">{
+        secret := os.Getenv(JWT_SECRET_KEY)
+        tokenValue := RemoveBearerPrefix(c.Request.Header.Get("Authorization"))
+
+        token, err := jwt.Parse(tokenValue, func(t *jwt.Token) (any, error) </span><span class="cov0" title="0">{
+                if _, ok := t.Method.(*jwt.SigningMethodHMAC); ok </span><span class="cov0" title="0">{
+                        return []byte(secret), nil
+                }</span>
+                <span class="cov0" title="0">return nil, rest_err.NewBadRequestError("invalid token")</span>
+        })
+
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                errRest := rest_err.NewUnauthorizedError("invalid token")
+                c.JSON(errRest.Code, errRest)
+                c.Abort()
+                return
+        }</span>
+
+        <span class="cov0" title="0">claims, ok := token.Claims.(jwt.MapClaims)
+        if !ok || !token.Valid </span><span class="cov0" title="0">{
+                errRest := rest_err.NewUnauthorizedError("invalid token")
+                c.JSON(errRest.Code, errRest)
+                c.Abort()
+                return
+        }</span>
+
+        <span class="cov0" title="0">userDomain := userDomain{
+                id:    claims["id"].(string),
+                email: claims["email"].(string),
+                name:  claims["name"].(string),
+                age:   int8(claims["age"].(float64)),
+        }
+
+        logger.Info(fmt.Sprintf("User authenticated %#v", userDomain))</span>
+}
+
+func RemoveBearerPrefix(token string) string <span class="cov0" title="0">{
+        token = strings.TrimPrefix(token, "Bearer ")
+        return token
+}</span>
+</pre>
+		
+		<pre class="file" id="file25" style="display: none">package view
+
+import (
+        "github.com/dlima78/gocourse/src/controller/model/response"
+        "github.com/dlima78/gocourse/src/model"
+)
+
+func ConvertDomainToResponse(
+        userDomain model.UserDomainInterface,
+) response.UserResponse <span class="cov0" title="0">{
+        return response.UserResponse{
+                ID:    userDomain.GetID(),
+                Email: userDomain.GetEmail(),
+                Name:  userDomain.GetName(),
+                Age:   userDomain.GetAge(),
+        }
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

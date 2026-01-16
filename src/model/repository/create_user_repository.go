@@ -25,6 +25,16 @@ func (ur *userRepository) CreateUser(
 
 	value := converter.ConvertDomainToEntity(userDomain)
 
+	user, _ := ur.FindUserByEmail(value.Email)
+
+	if user != nil {
+		errorMessage := fmt.Sprintf("User already exists with this email: %s", value.Email)
+		logger.Error(errorMessage,
+			nil,
+			zap.String("journey", "createUser"))
+		return nil, rest_err.NewBadRequestError(errorMessage)
+	}
+
 	result, err := collection.InsertOne(context.Background(), value)
 	if err != nil {
 		logger.Error("Error trying to create user",
