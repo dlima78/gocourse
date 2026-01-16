@@ -67,7 +67,7 @@
 				
 				<option value="file5">github.com/dlima78/gocourse/src/controller/create_user.go (0.0%)</option>
 				
-				<option value="file6">github.com/dlima78/gocourse/src/controller/delete_user.go (0.0%)</option>
+				<option value="file6">github.com/dlima78/gocourse/src/controller/delete_user.go (100.0%)</option>
 				
 				<option value="file7">github.com/dlima78/gocourse/src/controller/find_user.go (0.0%)</option>
 				
@@ -77,7 +77,7 @@
 				
 				<option value="file10">github.com/dlima78/gocourse/src/controller/update_user.go (0.0%)</option>
 				
-				<option value="file11">github.com/dlima78/gocourse/src/controller/user_controller.go (0.0%)</option>
+				<option value="file11">github.com/dlima78/gocourse/src/controller/user_controller.go (100.0%)</option>
 				
 				<option value="file12">github.com/dlima78/gocourse/src/model/repository/entity/converter/convert_domain_to_entity.go (0.0%)</option>
 				
@@ -463,14 +463,14 @@ import (
         "go.uber.org/zap"
 )
 
-func (uc *userControllerInterface) DeleteUser(c *gin.Context) <span class="cov0" title="0">{
+func (uc *userControllerInterface) DeleteUser(c *gin.Context) <span class="cov8" title="1">{
         logger.Info("Init deleteUser controller",
                 zap.String("journey", "deleteUser"),
         )
         userId := c.Param("userId")
 
         err := uc.service.DeleteUserService(userId)
-        if err != nil </span><span class="cov0" title="0">{
+        if err != nil </span><span class="cov8" title="1">{
                 logger.Error(
                         "Error trying to call DeleteUser service",
                         err,
@@ -479,7 +479,7 @@ func (uc *userControllerInterface) DeleteUser(c *gin.Context) <span class="cov0"
                 return
         }</span>
 
-        <span class="cov0" title="0">logger.Info(
+        <span class="cov8" title="1">logger.Info(
                 "DeleteUser controller executed successfully",
                 zap.String("userId", userId),
                 zap.String("journey", "deleteUser"),
@@ -710,7 +710,7 @@ import (
         "github.com/gin-gonic/gin"
 )
 
-func NewUserController(service service.UserDomainService) UserControllerInterface <span class="cov0" title="0">{
+func NewUserController(service service.UserDomainService) UserControllerInterface <span class="cov8" title="1">{
         return &amp;userControllerInterface{
                 service: service,
         }
