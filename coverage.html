@@ -65,7 +65,7 @@
 				
 				<option value="file4">github.com/dlima78/gocourse/src/configuration/validation/validation_user.go (0.0%)</option>
 				
-				<option value="file5">github.com/dlima78/gocourse/src/controller/create_user.go (0.0%)</option>
+				<option value="file5">github.com/dlima78/gocourse/src/controller/create_user.go (100.0%)</option>
 				
 				<option value="file6">github.com/dlima78/gocourse/src/controller/delete_user.go (100.0%)</option>
 				
@@ -73,39 +73,43 @@
 				
 				<option value="file8">github.com/dlima78/gocourse/src/controller/login_user.go (0.0%)</option>
 				
-				<option value="file9">github.com/dlima78/gocourse/src/controller/routes/routes.go (0.0%)</option>
+				<option value="file9">github.com/dlima78/gocourse/src/controller/mocks/mock_gin.go (0.0%)</option>
 				
-				<option value="file10">github.com/dlima78/gocourse/src/controller/update_user.go (0.0%)</option>
+				<option value="file10">github.com/dlima78/gocourse/src/controller/mocks/mock_user_controller.go (0.0%)</option>
 				
-				<option value="file11">github.com/dlima78/gocourse/src/controller/user_controller.go (100.0%)</option>
+				<option value="file11">github.com/dlima78/gocourse/src/controller/routes/routes.go (0.0%)</option>
 				
-				<option value="file12">github.com/dlima78/gocourse/src/model/repository/entity/converter/convert_domain_to_entity.go (0.0%)</option>
+				<option value="file12">github.com/dlima78/gocourse/src/controller/update_user.go (0.0%)</option>
 				
-				<option value="file13">github.com/dlima78/gocourse/src/model/repository/entity/converter/convert_entity_to_domain.go (0.0%)</option>
+				<option value="file13">github.com/dlima78/gocourse/src/controller/user_controller.go (100.0%)</option>
 				
-				<option value="file14">github.com/dlima78/gocourse/src/model/service/create_user.go (100.0%)</option>
+				<option value="file14">github.com/dlima78/gocourse/src/model/repository/entity/converter/convert_domain_to_entity.go (0.0%)</option>
 				
-				<option value="file15">github.com/dlima78/gocourse/src/model/service/delete_user.go (100.0%)</option>
+				<option value="file15">github.com/dlima78/gocourse/src/model/repository/entity/converter/convert_entity_to_domain.go (0.0%)</option>
 				
-				<option value="file16">github.com/dlima78/gocourse/src/model/service/find_user.go (66.7%)</option>
+				<option value="file16">github.com/dlima78/gocourse/src/model/service/create_user.go (100.0%)</option>
 				
-				<option value="file17">github.com/dlima78/gocourse/src/model/service/mocks/mock_user_repository.go (0.0%)</option>
+				<option value="file17">github.com/dlima78/gocourse/src/model/service/delete_user.go (100.0%)</option>
 				
-				<option value="file18">github.com/dlima78/gocourse/src/model/service/update_user.go (100.0%)</option>
+				<option value="file18">github.com/dlima78/gocourse/src/model/service/find_user.go (66.7%)</option>
 				
-				<option value="file19">github.com/dlima78/gocourse/src/model/service/user_interface.go (100.0%)</option>
+				<option value="file19">github.com/dlima78/gocourse/src/model/service/mocks/mock_user_repository.go (0.0%)</option>
 				
-				<option value="file20">github.com/dlima78/gocourse/src/model/service/user_login.go (0.0%)</option>
+				<option value="file20">github.com/dlima78/gocourse/src/model/service/update_user.go (100.0%)</option>
 				
-				<option value="file21">github.com/dlima78/gocourse/src/model/user_domain.go (0.0%)</option>
+				<option value="file21">github.com/dlima78/gocourse/src/model/service/user_interface.go (100.0%)</option>
 				
-				<option value="file22">github.com/dlima78/gocourse/src/model/user_domain_interface.go (0.0%)</option>
+				<option value="file22">github.com/dlima78/gocourse/src/model/service/user_login.go (0.0%)</option>
 				
-				<option value="file23">github.com/dlima78/gocourse/src/model/user_domain_password.go (0.0%)</option>
+				<option value="file23">github.com/dlima78/gocourse/src/model/user_domain.go (0.0%)</option>
 				
-				<option value="file24">github.com/dlima78/gocourse/src/model/user_token_domain.go (0.0%)</option>
+				<option value="file24">github.com/dlima78/gocourse/src/model/user_domain_interface.go (0.0%)</option>
 				
-				<option value="file25">github.com/dlima78/gocourse/src/view/convert_domain_to_response.go (0.0%)</option>
+				<option value="file25">github.com/dlima78/gocourse/src/model/user_domain_password.go (0.0%)</option>
+				
+				<option value="file26">github.com/dlima78/gocourse/src/model/user_token_domain.go (0.0%)</option>
+				
+				<option value="file27">github.com/dlima78/gocourse/src/view/convert_domain_to_response.go (0.0%)</option>
 				
 				</select>
 			</div>
@@ -410,13 +414,13 @@ var (
         UserDomainInterface model.UserDomainInterface
 )
 
-func (uc *userControllerInterface) CreateUser(c *gin.Context) <span class="cov0" title="0">{
+func (uc *userControllerInterface) CreateUser(c *gin.Context) <span class="cov8" title="1">{
         logger.Info("About to start user application",
                 zap.String("journey", "createUser"),
         )
         var userRequest request.UserRequest
 
-        if err := c.ShouldBindJSON(&amp;userRequest); err != nil </span><span class="cov0" title="0">{
+        if err := c.ShouldBindJSON(&amp;userRequest); err != nil </span><span class="cov8" title="1">{
                 logger.Error("Error trying to validate user info,", err,
                         zap.String("journey", "createUser"))
                 restErr := validation.ValidateUserError(err)
@@ -425,7 +429,7 @@ func (uc *userControllerInterface) CreateUser(c *gin.Context) <span class="cov0"
                 return
         }</span>
 
-        <span class="cov0" title="0">domain := model.NewUserDomain(
+        <span class="cov8" title="1">domain := model.NewUserDomain(
                 userRequest.Email,
                 userRequest.Password,
                 userRequest.Name,
@@ -433,7 +437,7 @@ func (uc *userControllerInterface) CreateUser(c *gin.Context) <span class="cov0"
         )
 
         domainResult, err := uc.service.CreateUserService(domain)
-        if err != nil </span><span class="cov0" title="0">{
+        if err != nil </span><span class="cov8" title="1">{
                 logger.Error(
                         "Error trying to call CreateUser service",
                         err,
@@ -442,7 +446,7 @@ func (uc *userControllerInterface) CreateUser(c *gin.Context) <span class="cov0"
                 return
         }</span>
 
-        <span class="cov0" title="0">logger.Info(
+        <span class="cov8" title="1">logger.Info(
                 "CreateUser controller executed successfully",
                 zap.String("userId", domainResult.GetID()),
                 zap.String("journey", "createUser"),
@@ -628,7 +632,118 @@ func (uc *userControllerInterface) LoginUser(c *gin.Context) <span class="cov0" 
 }
 </pre>
 		
-		<pre class="file" id="file9" style="display: none">package routes
+		<pre class="file" id="file9" style="display: none">package mock_user_controller
+
+import (
+        "io"
+        "net/http"
+        "net/http/httptest"
+        "net/url"
+
+        "github.com/gin-gonic/gin"
+)
+
+func GetTestingGinContext(recorder *httptest.ResponseRecorder) *gin.Context <span class="cov0" title="0">{
+        gin.SetMode(gin.TestMode)
+        ctx, _ := gin.CreateTestContext(recorder)
+        ctx.Request = &amp;http.Request{
+                Header: make(http.Header),
+                URL:    &amp;url.URL{},
+        }
+        return ctx
+}</span>
+
+func MakeRequest(c *gin.Context, param gin.Params, u url.Values, method string, body io.ReadCloser) <span class="cov0" title="0">{
+        c.Request.Method = method
+        c.Request.Header.Set("Content-Type", "application/json")
+        c.Params = param
+
+        c.Request.Body = body
+        c.Request.URL.RawQuery = u.Encode()
+}</span>
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package mock_user_controller
+
+import (
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/stretchr/testify/mock"
+)
+
+type MockUserService struct {
+        mock.Mock
+}
+
+func (m *MockUserService) CreateUserService(u model.UserDomainInterface) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov0" title="0">{
+        args := m.Called(u)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                if args.Get(1) == nil </span><span class="cov0" title="0">{
+                        return nil, nil
+                }</span>
+                <span class="cov0" title="0">return nil, args.Get(1).(*rest_err.RestErr)</span>
+        }
+        <span class="cov0" title="0">if args.Get(1) == nil </span><span class="cov0" title="0">{
+                return args.Get(0).(model.UserDomainInterface), nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(model.UserDomainInterface), args.Get(1).(*rest_err.RestErr)</span>
+}
+func (m *MockUserService) UpdateUserService(id string, u model.UserDomainInterface) *rest_err.RestErr <span class="cov0" title="0">{
+        args := m.Called(id, u)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(*rest_err.RestErr)</span>
+}
+func (m *MockUserService) FindUserByEmailService(email string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov0" title="0">{
+        args := m.Called(email)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                if args.Get(1) == nil </span><span class="cov0" title="0">{
+                        return nil, nil
+                }</span>
+                <span class="cov0" title="0">return nil, args.Get(1).(*rest_err.RestErr)</span>
+        }
+        <span class="cov0" title="0">if args.Get(1) == nil </span><span class="cov0" title="0">{
+                return args.Get(0).(model.UserDomainInterface), nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(model.UserDomainInterface), args.Get(1).(*rest_err.RestErr)</span>
+}
+func (m *MockUserService) FindUserByIDService(id string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov0" title="0">{
+        args := m.Called(id)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                if args.Get(1) == nil </span><span class="cov0" title="0">{
+                        return nil, nil
+                }</span>
+                <span class="cov0" title="0">return nil, args.Get(1).(*rest_err.RestErr)</span>
+        }
+        <span class="cov0" title="0">if args.Get(1) == nil </span><span class="cov0" title="0">{
+                return args.Get(0).(model.UserDomainInterface), nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(model.UserDomainInterface), args.Get(1).(*rest_err.RestErr)</span>
+}
+func (m *MockUserService) DeleteUserService(id string) *rest_err.RestErr <span class="cov0" title="0">{
+        args := m.Called(id)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(*rest_err.RestErr)</span>
+}
+func (m *MockUserService) LoginUserService(u model.UserDomainInterface) (model.UserDomainInterface, string, *rest_err.RestErr) <span class="cov0" title="0">{
+        args := m.Called(u)
+        if args.Get(0) == nil </span><span class="cov0" title="0">{
+                if args.Get(2) == nil </span><span class="cov0" title="0">{
+                        return nil, "", nil
+                }</span>
+                <span class="cov0" title="0">return nil, "", args.Get(2).(*rest_err.RestErr)</span>
+        }
+        <span class="cov0" title="0">if args.Get(2) == nil </span><span class="cov0" title="0">{
+                return args.Get(0).(model.UserDomainInterface), args.String(1), nil
+        }</span>
+        <span class="cov0" title="0">return args.Get(0).(model.UserDomainInterface), args.String(1), args.Get(2).(*rest_err.RestErr)</span>
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package routes
 
 import (
         "github.com/dlima78/gocourse/src/controller"
@@ -646,7 +761,7 @@ func InitRoutes(r *gin.RouterGroup, userController controller.UserControllerInte
 }</span>
 </pre>
 		
-		<pre class="file" id="file10" style="display: none">package controller
+		<pre class="file" id="file12" style="display: none">package controller
 
 import (
         "net/http"
@@ -703,7 +818,7 @@ func (uc *userControllerInterface) UpdateUser(c *gin.Context) <span class="cov0"
 }
 </pre>
 		
-		<pre class="file" id="file11" style="display: none">package controller
+		<pre class="file" id="file13" style="display: none">package controller
 
 import (
         "github.com/dlima78/gocourse/src/model/service"
@@ -730,7 +845,7 @@ type userControllerInterface struct {
 }
 </pre>
 		
-		<pre class="file" id="file12" style="display: none">package converter
+		<pre class="file" id="file14" style="display: none">package converter
 
 import (
         "github.com/dlima78/gocourse/src/model"
@@ -747,7 +862,7 @@ func ConvertDomainToEntity(domain model.UserDomainInterface) *entity.UserEntity 
 }</span>
 </pre>
 		
-		<pre class="file" id="file13" style="display: none">package converter
+		<pre class="file" id="file15" style="display: none">package converter
 
 import (
         "github.com/dlima78/gocourse/src/model"
@@ -767,7 +882,7 @@ func ConvertEntityToDomain(entity entity.UserEntity) model.UserDomainInterface <
 }</span>
 </pre>
 		
-		<pre class="file" id="file14" style="display: none">package service
+		<pre class="file" id="file16" style="display: none">package service
 
 import (
         rest_err "github.com/dlima78/gocourse/src/configuration"
@@ -803,7 +918,7 @@ func (ud *userDomainService) CreateUserService(userDomain model.UserDomainInterf
 }
 </pre>
 		
-		<pre class="file" id="file15" style="display: none">package service
+		<pre class="file" id="file17" style="display: none">package service
 
 import (
         rest_err "github.com/dlima78/gocourse/src/configuration"
@@ -829,7 +944,7 @@ func (ud *userDomainService) DeleteUserService(userID string) *rest_err.RestErr 
 }
 </pre>
 		
-		<pre class="file" id="file16" style="display: none">package service
+		<pre class="file" id="file18" style="display: none">package service
 
 import (
         rest_err "github.com/dlima78/gocourse/src/configuration"
@@ -859,7 +974,7 @@ func (ud *userDomainService) findUserByEmailAndPasswordService(email, password s
 }</span>
 </pre>
 		
-		<pre class="file" id="file17" style="display: none">package mock_user_repository
+		<pre class="file" id="file19" style="display: none">package mock_user_repository
 
 import (
         rest_err "github.com/dlima78/gocourse/src/configuration"
@@ -958,7 +1073,7 @@ func (m *MockUserRepository) FindUserByEmailAndPassword(email, password string) 
 }
 </pre>
 		
-		<pre class="file" id="file18" style="display: none">package service
+		<pre class="file" id="file20" style="display: none">package service
 
 import (
         rest_err "github.com/dlima78/gocourse/src/configuration"
@@ -995,7 +1110,7 @@ func (ud *userDomainService) UpdateUserService(userID string, userDomain model.U
 }
 </pre>
 		
-		<pre class="file" id="file19" style="display: none">package service
+		<pre class="file" id="file21" style="display: none">package service
 
 import (
         rest_err "github.com/dlima78/gocourse/src/configuration"
@@ -1021,7 +1136,7 @@ type UserDomainService interface {
 }
 </pre>
 		
-		<pre class="file" id="file20" style="display: none">package service
+		<pre class="file" id="file22" style="display: none">package service
 
 import (
         rest_err "github.com/dlima78/gocourse/src/configuration"
@@ -1058,7 +1173,7 @@ func (ud *userDomainService) LoginUserService(userDomain model.UserDomainInterfa
 }
 </pre>
 		
-		<pre class="file" id="file21" style="display: none">package model
+		<pre class="file" id="file23" style="display: none">package model
 
 type userDomain struct {
         id       string
@@ -1092,7 +1207,7 @@ func (ud *userDomain) GetAge() int8 <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file22" style="display: none">package model
+		<pre class="file" id="file24" style="display: none">package model
 
 import rest_err "github.com/dlima78/gocourse/src/configuration"
 
@@ -1120,7 +1235,7 @@ func NewUserLoginDomain(email, password string) UserDomainInterface <span class=
 }</span>
 </pre>
 		
-		<pre class="file" id="file23" style="display: none">package model
+		<pre class="file" id="file25" style="display: none">package model
 
 import (
         "crypto/md5"
@@ -1135,7 +1250,7 @@ func (ud *userDomain) EncryptPassword() <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file24" style="display: none">package model
+		<pre class="file" id="file26" style="display: none">package model
 
 import (
         "fmt"
@@ -1218,7 +1333,7 @@ func RemoveBearerPrefix(token string) string <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file25" style="display: none">package view
+		<pre class="file" id="file27" style="display: none">package view
 
 import (
         "github.com/dlima78/gocourse/src/controller/model/response"
