@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	rest_err "github.com/dlima78/gocourse/src/configuration"
 	mock_user_controller "github.com/dlima78/gocourse/src/controller/mocks"
 	responseModel "github.com/dlima78/gocourse/src/controller/model/response"
 	"github.com/dlima78/gocourse/src/model"
@@ -54,6 +55,30 @@ func TestFindUserByIDController_InvalidObjectID(t *testing.T) {
 
 	assert.Equal(t, http.StatusBadRequest, recorder.Code)
 	mockService.AssertNotCalled(t, "FindUserByIDService")
+}
+
+func TestFindUserByIDController_NotFound(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	ctx := mock_user_controller.GetTestingGinContext(recorder)
+
+	id := "507f1f77bcf86cd799439011" // 24-char hex válido
+	params := gin.Params{gin.Param{Key: "userId", Value: id}}
+	mock_user_controller.MakeRequest(ctx, params, nil, "GET", nil)
+
+	mockService := new(mock_user_controller.MockUserService)
+	errResp := rest_err.NewNotFoundError("user not found")
+	mockService.On("FindUserByIDService", id).Return(nil, errResp)
+
+	uc := NewUserController(mockService)
+	uc.FindUserByID(ctx)
+
+	assert.Equal(t, http.StatusNotFound, recorder.Code)
+
+	var resp rest_err.RestErr
+	_ = json.Unmarshal(recorder.Body.Bytes(), &resp)
+	assert.Equal(t, errResp.Message, resp.Message)
+
+	mockService.AssertExpectations(t)
 }
 
 func TestFindUserByEmailController_Success(t *testing.T) {

@@ -69,7 +69,7 @@
 				
 				<option value="file6">github.com/dlima78/gocourse/src/controller/delete_user.go (100.0%)</option>
 				
-				<option value="file7">github.com/dlima78/gocourse/src/controller/find_user.go (50.0%)</option>
+				<option value="file7">github.com/dlima78/gocourse/src/controller/find_user.go (64.3%)</option>
 				
 				<option value="file8">github.com/dlima78/gocourse/src/controller/login_user.go (0.0%)</option>
 				
@@ -515,7 +515,7 @@ func (uc *userControllerInterface) FindUserByID(c *gin.Context) <span class="cov
 
         userId := c.Param("userId")
 
-        if _, err := bson.ObjectIDFromHex(userId); err != nil </span><span class="cov0" title="0">{
+        if _, err := bson.ObjectIDFromHex(userId); err != nil </span><span class="cov8" title="1">{
                 logger.Error("Error trying to validate userId",
                         err,
                         zap.String("journey", "findUserByID"),
