@@ -1,0 +1,41 @@
+package controller
+
+import (
+	"encoding/json"
+	"net/http/httptest"
+	"testing"
+
+	mock_user_controller "github.com/dlima78/gocourse/src/controller/mocks"
+	responseModel "github.com/dlima78/gocourse/src/controller/model/response"
+	"github.com/dlima78/gocourse/src/model"
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
+)
+
+func TestFindUserByIDController_Success(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	context := mock_user_controller.GetTestingGinContext(recorder)
+
+	id := "507f1f77bcf86cd799439011" // 24-char hex id
+
+	mockService := new(mock_user_controller.MockUserService)
+
+	mock_user_controller.MakeRequest(context, gin.Params{gin.Param{Key: "userId", Value: id}}, nil, "GET", nil)
+	user := model.NewUserDomain("test@example.com", "pass!23", "João", 30)
+	user.SetID(id)
+
+	mockService.On("FindUserByIDService", id).Return(user, nil)
+
+	controller := NewUserController(mockService)
+	controller.FindUserByID(context)
+
+	mockService.AssertExpectations(t)
+
+	var resp responseModel.UserResponse
+	err := json.Unmarshal(recorder.Body.Bytes(), &resp)
+	assert.NoError(t, err)
+	assert.Equal(t, "test@example.com", resp.Email)
+	assert.Equal(t, "João", resp.Name)
+	assert.Equal(t, 200, recorder.Code)
+
+}
