@@ -39,3 +39,27 @@ func TestFindUserByIDController_Success(t *testing.T) {
 	assert.Equal(t, 200, recorder.Code)
 
 }
+
+func TestFindUserByEmailController_Success(t *testing.T) {
+	email := "est@example.com"
+	recorder := httptest.NewRecorder()
+	context := mock_user_controller.GetTestingGinContext(recorder)
+	mockService := new(mock_user_controller.MockUserService)
+
+	mock_user_controller.MakeRequest(context, gin.Params{gin.Param{Key: "userEmail", Value: email}}, nil, "GET", nil)
+
+	user := model.NewUserDomain("test@example.com", "pass!23", "João", 30)
+	mockService.On("FindUserByEmailService", email).Return(user, nil)
+
+	controller := NewUserController(mockService)
+	controller.FindUserByEmail(context)
+
+	mockService.AssertExpectations(t)
+
+	var resp responseModel.UserResponse
+	err := json.Unmarshal(recorder.Body.Bytes(), &resp)
+	assert.NoError(t, err)
+	assert.Equal(t, "test@example.com", resp.Email)
+	assert.Equal(t, "João", resp.Name)
+	assert.Equal(t, 200, recorder.Code)
+}
