@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"net/http"
 	"net/http/httptest"
 	"testing"
 
@@ -38,6 +39,21 @@ func TestFindUserByIDController_Success(t *testing.T) {
 	assert.Equal(t, "João", resp.Name)
 	assert.Equal(t, 200, recorder.Code)
 
+}
+
+func TestFindUserByIDController_InvalidObjectID(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	ctx := mock_user_controller.GetTestingGinContext(recorder)
+
+	params := gin.Params{gin.Param{Key: "userId", Value: "123"}}
+	mock_user_controller.MakeRequest(ctx, params, nil, "GET", nil)
+
+	mockService := new(mock_user_controller.MockUserService)
+	uc := NewUserController(mockService)
+	uc.FindUserByID(ctx)
+
+	assert.Equal(t, http.StatusBadRequest, recorder.Code)
+	mockService.AssertNotCalled(t, "FindUserByIDService")
 }
 
 func TestFindUserByEmailController_Success(t *testing.T) {
