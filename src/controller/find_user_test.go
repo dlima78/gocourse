@@ -121,3 +121,27 @@ func TestFindUserByEmailController_InvalidEmail(t *testing.T) {
 	mockService.AssertNotCalled(t, "FindUserByEmailService")
 
 }
+
+func TestFindUserByEmailController_NotFound(t *testing.T) {
+	email := "est@example.com"
+	recorder := httptest.NewRecorder()
+	context := mock_user_controller.GetTestingGinContext(recorder)
+	mockService := new(mock_user_controller.MockUserService)
+
+	params := gin.Params{gin.Param{Key: "userEmail", Value: email}}
+	mock_user_controller.MakeRequest(context, params, nil, "GET", nil)
+
+	errResp := rest_err.NewNotFoundError("user not found")
+	mockService.On("FindUserByEmailService", email).Return(nil, errResp)
+
+	controller := NewUserController(mockService)
+	controller.FindUserByEmail(context)
+
+	assert.Equal(t, http.StatusNotFound, recorder.Code)
+
+	var resp rest_err.RestErr
+	_ = json.Unmarshal(recorder.Body.Bytes(), &resp)
+	assert.Equal(t, errResp.Message, resp.Message)
+
+	mockService.AssertExpectations(t)
+}

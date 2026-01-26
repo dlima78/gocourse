@@ -69,7 +69,7 @@
 				
 				<option value="file6">github.com/dlima78/gocourse/src/controller/delete_user.go (100.0%)</option>
 				
-				<option value="file7">github.com/dlima78/gocourse/src/controller/find_user.go (75.0%)</option>
+				<option value="file7">github.com/dlima78/gocourse/src/controller/find_user.go (89.3%)</option>
 				
 				<option value="file8">github.com/dlima78/gocourse/src/controller/login_user.go (0.0%)</option>
 				
@@ -550,7 +550,7 @@ func (uc *userControllerInterface) FindUserByEmail(c *gin.Context) <span class="
         logger.Info("Init findUserByEmail controller", zap.String("journey", "FindUserByEmail"))
 
         userEmail := c.Param("userEmail")
-        if _, err := mail.ParseAddress(userEmail); err != nil </span><span class="cov0" title="0">{
+        if _, err := mail.ParseAddress(userEmail); err != nil </span><span class="cov8" title="1">{
                 logger.Error("Error trying to validate userEmail", err, zap.String("journey", "FindUserByEmail"))
                 errorMessage := rest_err.NewBadRequestError("UserEmail is not a valid email")
 
