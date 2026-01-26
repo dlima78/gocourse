@@ -79,7 +79,7 @@
 				
 				<option value="file11">github.com/dlima78/gocourse/src/controller/routes/routes.go (0.0%)</option>
 				
-				<option value="file12">github.com/dlima78/gocourse/src/controller/update_user.go (0.0%)</option>
+				<option value="file12">github.com/dlima78/gocourse/src/controller/update_user.go (81.2%)</option>
 				
 				<option value="file13">github.com/dlima78/gocourse/src/controller/user_controller.go (100.0%)</option>
 				
@@ -775,7 +775,7 @@ import (
         "go.uber.org/zap"
 )
 
-func (uc *userControllerInterface) UpdateUser(c *gin.Context) <span class="cov0" title="0">{
+func (uc *userControllerInterface) UpdateUser(c *gin.Context) <span class="cov8" title="1">{
         logger.Info("About to start user application",
                 zap.String("journey", "updateUser"),
         )
@@ -784,7 +784,7 @@ func (uc *userControllerInterface) UpdateUser(c *gin.Context) <span class="cov0"
         userId := c.Param("userId")
 
         if err := c.ShouldBindJSON(&amp;userUpdateRequest); err != nil ||
-                strings.TrimSpace(userId) == "" </span><span class="cov0" title="0">{
+                strings.TrimSpace(userId) == "" </span><span class="cov8" title="1">{
                 logger.Error("Error trying to validate user info,", err,
                         zap.String("journey", "updateUser"))
                 restErr := validation.ValidateUserError(err)
@@ -793,7 +793,7 @@ func (uc *userControllerInterface) UpdateUser(c *gin.Context) <span class="cov0"
                 return
         }</span>
 
-        <span class="cov0" title="0">domain := model.NewUserUpdateDomain(
+        <span class="cov8" title="1">domain := model.NewUserUpdateDomain(
                 userUpdateRequest.Name,
                 userUpdateRequest.Age,
         )
@@ -808,7 +808,7 @@ func (uc *userControllerInterface) UpdateUser(c *gin.Context) <span class="cov0"
                 return
         }</span>
 
-        <span class="cov0" title="0">logger.Info(
+        <span class="cov8" title="1">logger.Info(
                 "UpdateUser controller executed successfully",
                 zap.String("userId", userId),
                 zap.String("journey", "updateUser"),
