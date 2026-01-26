@@ -1,0 +1,581 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>repository: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/dlima78/gocourse/src/model/repository/create_user_repository.go (88.2%)</option>
+				
+				<option value="file1">github.com/dlima78/gocourse/src/model/repository/delete_user_repository.go (0.0%)</option>
+				
+				<option value="file2">github.com/dlima78/gocourse/src/model/repository/entity/converter/convert_domain_to_entity.go (0.0%)</option>
+				
+				<option value="file3">github.com/dlima78/gocourse/src/model/repository/entity/converter/convert_entity_to_domain.go (0.0%)</option>
+				
+				<option value="file4">github.com/dlima78/gocourse/src/model/repository/find_user_repository.go (23.6%)</option>
+				
+				<option value="file5">github.com/dlima78/gocourse/src/model/repository/test_helper.go (59.1%)</option>
+				
+				<option value="file6">github.com/dlima78/gocourse/src/model/repository/update_user_repository.go (0.0%)</option>
+				
+				<option value="file7">github.com/dlima78/gocourse/src/model/repository/user_repository.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package repository
+
+import (
+        "context"
+        "fmt"
+        "os"
+
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/dlima78/gocourse/src/model/repository/entity/converter"
+        "go.mongodb.org/mongo-driver/v2/bson"
+        "go.uber.org/zap"
+)
+
+func (ur *userRepository) CreateUser(
+        userDomain model.UserDomainInterface,
+) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov10" title="4">{
+        logger.Info("Init createUser repository",
+                zap.String("journey", "createUser"))
+
+        collection_name := os.Getenv(MONGODB_USER_DB)
+
+        collection := ur.databaseConnection.Collection(collection_name)
+
+        value := converter.ConvertDomainToEntity(userDomain)
+
+        user, _ := ur.FindUserByEmail(value.Email)
+
+        if user != nil </span><span class="cov1" title="1">{
+                errorMessage := fmt.Sprintf("User already exists with this email: %s", value.Email)
+                logger.Error(errorMessage,
+                        nil,
+                        zap.String("journey", "createUser"))
+                return nil, rest_err.NewBadRequestError(errorMessage)
+        }</span>
+
+        <span class="cov8" title="3">result, err := collection.InsertOne(context.Background(), value)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Error("Error trying to create user",
+                        err,
+                        zap.String("journey", "createUser"))
+                return nil, rest_err.NewInternalServerError(err.Error())
+        }</span>
+
+        <span class="cov8" title="3">value.ID = result.InsertedID.(bson.ObjectID)
+
+        logger.Info("User inserted successfully",
+                zap.String("journey", "createUser"),
+                zap.String("insertedID_type", fmt.Sprintf("%T", result.InsertedID)),
+                zap.String("insertedID_value", fmt.Sprintf("%v", result.InsertedID)))
+
+        logger.Info(
+                "CreateUser repository executed successfully",
+                zap.String("userId", value.ID.Hex()),
+                zap.String("journey", "createUser"))
+
+        return converter.ConvertEntityToDomain(*value), nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package repository
+
+import (
+        "context"
+        "fmt"
+        "os"
+
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "go.mongodb.org/mongo-driver/v2/bson"
+        "go.mongodb.org/mongo-driver/v2/mongo"
+        "go.uber.org/zap"
+)
+
+func (ur *userRepository) DeleteUser(userId string) *rest_err.RestErr <span class="cov0" title="0">{
+        logger.Info("Init deleteUser repository",
+                zap.String("journey", "deleteUser"),
+                zap.String("searchingForId", userId))
+
+        collection_name := os.Getenv(MONGODB_USER_DB)
+        collection := ur.databaseConnection.Collection(collection_name)
+
+        objectId, err := bson.ObjectIDFromHex(userId)
+        if err != nil </span><span class="cov0" title="0">{
+                errorMessage := fmt.Sprintf("Invalid user ID format: %s", userId)
+                logger.Error(errorMessage, err, zap.String("journey", "deleteUser"))
+                return rest_err.NewBadRequestError(errorMessage)
+        }</span>
+
+        <span class="cov0" title="0">filter := bson.D{{Key: "_id", Value: objectId}}
+
+        logger.Info("Searching with filter",
+                zap.String("journey", "deleteUser"),
+                zap.String("filter", filter.String()))
+
+        _, err = collection.DeleteOne(context.Background(), filter)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if err == mongo.ErrNoDocuments </span><span class="cov0" title="0">{
+                        errorMessage := fmt.Sprintf(
+                                "User not found with this ID: %s", userId)
+                        logger.Error(errorMessage, err, zap.String("journey", "deleteUser"))
+                        return rest_err.NewNotFoundError(errorMessage)
+                }</span>
+
+                <span class="cov0" title="0">errorMessage := "Error trying to delete user from database"
+                logger.Error(errorMessage, err, zap.String("journey", "deleteUser"))
+
+                return rest_err.NewInternalServerError(errorMessage)</span>
+        }
+
+        <span class="cov0" title="0">logger.Info("DeleteUser repository executed successfully", zap.String("journey", "deleteUser"))
+
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package converter
+
+import (
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/dlima78/gocourse/src/model/repository/entity"
+)
+
+func ConvertDomainToEntity(domain model.UserDomainInterface) *entity.UserEntity <span class="cov0" title="0">{
+        return &amp;entity.UserEntity{
+                Email:    domain.GetEmail(),
+                Password: domain.GetPassword(),
+                Name:     domain.GetName(),
+                Age:      domain.GetAge(),
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package converter
+
+import (
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/dlima78/gocourse/src/model/repository/entity"
+)
+
+func ConvertEntityToDomain(entity entity.UserEntity) model.UserDomainInterface <span class="cov0" title="0">{
+        domain := model.NewUserDomain(
+                entity.Email,
+                entity.Password,
+                entity.Name,
+                entity.Age,
+        )
+
+        domain.SetID(entity.ID.Hex())
+        return domain
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package repository
+
+import (
+        "context"
+        "fmt"
+        "os"
+
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/dlima78/gocourse/src/model/repository/entity"
+        "github.com/dlima78/gocourse/src/model/repository/entity/converter"
+        "go.mongodb.org/mongo-driver/v2/bson"
+        "go.mongodb.org/mongo-driver/v2/mongo"
+        "go.uber.org/zap"
+)
+
+func (ur *userRepository) FindUserByEmail(email string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov10" title="6">{
+        logger.Info("Init findUserByEmail repository",
+                zap.String("journey", "findUserByEmail"))
+
+        collection_name := os.Getenv(MONGODB_USER_DB)
+
+        collection := ur.databaseConnection.Collection(collection_name)
+
+        userEntity := &amp;entity.UserEntity{}
+
+        filter := bson.D{{Key: "email", Value: email}}
+        err := collection.FindOne(context.Background(), filter).Decode(userEntity)
+
+        if err != nil </span><span class="cov7" title="4">{
+                if err == mongo.ErrNoDocuments </span><span class="cov7" title="4">{
+                        errorMessage := fmt.Sprintf("User not found with this email: %s", email)
+                        logger.Error(errorMessage, err, zap.String("journey", "findUserByEmail"))
+                        return nil, rest_err.NewNotFoundError(errorMessage)
+                }</span>
+                <span class="cov0" title="0">errorMessage := "Error trying to find user by email"
+                logger.Error(errorMessage, err, zap.String("journey", "findUserByEmail"))
+                return nil, rest_err.NewInternalServerError(errorMessage)</span>
+        }
+
+        <span class="cov4" title="2">logger.Info("FindUserByEmail repository execute successfully",
+                zap.String("journey", "findUserByEmail"),
+                zap.String("email", email),
+                zap.String("userId", userEntity.ID.Hex()),
+        )
+        return converter.ConvertEntityToDomain(*userEntity), nil</span>
+}
+
+func (ur *userRepository) FindUserByID(
+        id string,
+) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov0" title="0">{
+        logger.Info("Init findUserByID repository",
+                zap.String("journey", "findUserByID"),
+                zap.String("searchingForId", id))
+
+        collection_name := os.Getenv(MONGODB_USER_DB)
+        collection := ur.databaseConnection.Collection(collection_name)
+
+        userEntity := &amp;entity.UserEntity{}
+
+        objectId, err := bson.ObjectIDFromHex(id)
+        if err != nil </span><span class="cov0" title="0">{
+                errorMessage := fmt.Sprintf("Invalid user ID format: %s", id)
+                logger.Error(errorMessage, err, zap.String("journey", "findUserByID"))
+                return nil, rest_err.NewBadRequestError(errorMessage)
+        }</span>
+
+        <span class="cov0" title="0">logger.Info("ObjectID parsed successfully",
+                zap.String("journey", "findUserByID"),
+                zap.String("objectIdHex", objectId.Hex()))
+
+        filter := bson.D{{Key: "_id", Value: objectId}}
+
+        logger.Info("Searching with filter",
+                zap.String("journey", "findUserByID"),
+                zap.String("filter", filter.String()))
+
+        err = collection.FindOne(
+                context.Background(),
+                filter,
+        ).Decode(userEntity)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if err == mongo.ErrNoDocuments </span><span class="cov0" title="0">{
+                        errorMessage := fmt.Sprintf(
+                                "User not found with this ID: %s", id)
+                        logger.Error(errorMessage,
+                                err,
+                                zap.String("journey", "findUserByID"))
+
+                        return nil, rest_err.NewNotFoundError(errorMessage)
+                }</span>
+                <span class="cov0" title="0">errorMessage := "Error trying to find user by ID"
+                logger.Error(errorMessage,
+                        err,
+                        zap.String("journey", "findUserByID"))
+
+                return nil, rest_err.NewInternalServerError(errorMessage)</span>
+        }
+
+        <span class="cov0" title="0">logger.Info("FindUserByID repository executed successfully",
+                zap.String("journey", "findUserByID"),
+                zap.String("userId", userEntity.ID.Hex()))
+        return converter.ConvertEntityToDomain(*userEntity), nil</span>
+}
+
+func (ur *userRepository) FindUserByEmailAndPassword(email, password string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov0" title="0">{
+        logger.Info("Init findUserByEmailAndPassword repository",
+                zap.String("journey", "findUserByEmailAndPassword"))
+
+        collection_name := os.Getenv(MONGODB_USER_DB)
+
+        collection := ur.databaseConnection.Collection(collection_name)
+
+        userEntity := &amp;entity.UserEntity{}
+
+        filter := bson.D{
+                {Key: "email", Value: email},
+                {Key: "password", Value: password},
+        }
+        err := collection.FindOne(context.Background(), filter).Decode(userEntity)
+
+        if err != nil </span><span class="cov0" title="0">{
+                if err == mongo.ErrNoDocuments </span><span class="cov0" title="0">{
+                        errorMessage := "User or password invalid"
+                        logger.Error(errorMessage, err, zap.String("journey", "findUserByEmailAndPassword"))
+                        return nil, rest_err.NewUnauthorizedError(errorMessage)
+                }</span>
+                <span class="cov0" title="0">errorMessage := "Error trying to find user by email and password"
+                logger.Error(errorMessage, err, zap.String("journey", "        findUserByEmailAndPassword"))
+                return nil, rest_err.NewInternalServerError(errorMessage)</span>
+        }
+
+        <span class="cov0" title="0">logger.Info("FindUserByEmailAndPassword repository execute successfully",
+                zap.String("journey", "findUserByEmailAndPassword"),
+                zap.String("email", email),
+                zap.String("userId", userEntity.ID.Hex()),
+        )
+        return converter.ConvertEntityToDomain(*userEntity), nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package repository
+
+import (
+        "context"
+        "testing"
+
+        "github.com/testcontainers/testcontainers-go/modules/mongodb"
+        "go.mongodb.org/mongo-driver/v2/mongo"
+        "go.mongodb.org/mongo-driver/v2/mongo/options"
+)
+
+// MongoTestSetup contém a configuração do MongoDB para testes
+type MongoTestSetup struct {
+        Client    *mongo.Client
+        Database  *mongo.Database
+        Container *mongodb.MongoDBContainer
+        Context   context.Context
+}
+
+// SetupMongoDB cria um container MongoDB e retorna a conexão pronta para usar
+func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class="cov10" title="3">{
+        ctx := context.Background()
+
+        // Iniciar container MongoDB
+        mongodbContainer, err := mongodb.Run(ctx, "mongo:6")
+        if err != nil </span><span class="cov0" title="0">{
+                t.Fatalf("Failed to start MongoDB container: %v", err)
+        }</span>
+
+        // Obter a string de conexão
+        <span class="cov10" title="3">mongoURI, err := mongodbContainer.ConnectionString(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                mongodbContainer.Terminate(ctx)
+                t.Fatalf("Failed to get connection string: %v", err)
+        }</span>
+
+        // Conectar ao MongoDB
+        <span class="cov10" title="3">opts := options.Client().ApplyURI(mongoURI)
+        client, err := mongo.Connect(opts)
+        if err != nil </span><span class="cov0" title="0">{
+                mongodbContainer.Terminate(ctx)
+                t.Fatalf("Failed to connect to MongoDB: %v", err)
+        }</span>
+
+        // Testar a conexão
+        <span class="cov10" title="3">if err := client.Ping(ctx, nil); err != nil </span><span class="cov0" title="0">{
+                client.Disconnect(ctx)
+                mongodbContainer.Terminate(ctx)
+                t.Fatalf("Failed to ping MongoDB: %v", err)
+        }</span>
+
+        <span class="cov10" title="3">database := client.Database(databaseName)
+
+        return &amp;MongoTestSetup{
+                Client:    client,
+                Database:  database,
+                Container: mongodbContainer,
+                Context:   ctx,
+        }</span>
+}
+
+// Cleanup encerra a conexão e termina o container
+func (m *MongoTestSetup) Cleanup() error <span class="cov10" title="3">{
+        if err := m.Client.Disconnect(m.Context); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov10" title="3">return m.Container.Terminate(m.Context)</span>
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package repository
+
+import (
+        "context"
+        "fmt"
+        "os"
+
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/configuration/logger"
+        "github.com/dlima78/gocourse/src/model"
+        "github.com/dlima78/gocourse/src/model/repository/entity/converter"
+        "go.mongodb.org/mongo-driver/v2/bson"
+        "go.uber.org/zap"
+)
+
+func (ur *userRepository) UpdateUser(
+        userId string,
+        userDomain model.UserDomainInterface,
+) *rest_err.RestErr <span class="cov0" title="0">{
+        logger.Info("Init updateUser repository",
+                zap.String("journey", "updateUser"))
+
+        collection_name := os.Getenv(MONGODB_USER_DB)
+        collection := ur.databaseConnection.Collection(collection_name)
+
+        value := converter.ConvertDomainToEntity(userDomain)
+
+        fmt.Println("VALUE: ", value)
+
+        objectId, err := rest_err.NewObjectIDFromHex(userId)
+        if err != nil </span><span class="cov0" title="0">{
+                errorMessage := fmt.Sprintf("Invalid user ID format: %s", userId)
+                logger.Error(errorMessage, err, zap.String("journey", "findUserByID"))
+                return rest_err.NewBadRequestError(errorMessage)
+        }</span>
+
+        <span class="cov0" title="0">filter := bson.D{{Key: "_id", Value: objectId}}
+        update := bson.D{{Key: "$set", Value: value}}
+
+        result, err := collection.UpdateOne(context.Background(), filter, update)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Error("Error trying to update user",
+                        err,
+                        zap.String("journey", "updateUser"))
+                return rest_err.NewInternalServerError(err.Error())
+        }</span>
+
+        <span class="cov0" title="0">logger.Info("User updated successfully",
+                zap.String("journey", "updateUser"),
+                zap.String("matchedCount", fmt.Sprintf("%v", result.MatchedCount)),
+                zap.String("modifiedCount", fmt.Sprintf("%v", result.ModifiedCount)),
+        )
+
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package repository
+
+import (
+        rest_err "github.com/dlima78/gocourse/src/configuration"
+        "github.com/dlima78/gocourse/src/model"
+        "go.mongodb.org/mongo-driver/v2/mongo"
+)
+
+const (
+        MONGODB_USER_DB = "MONGODB_USER_DB"
+)
+
+func NewUserRepository(database *mongo.Database) UserRepository <span class="cov10" title="3">{
+        return &amp;userRepository{
+                database,
+        }
+}</span>
+
+type userRepository struct {
+        databaseConnection *mongo.Database
+}
+
+type UserRepository interface {
+        CreateUser(userDomain model.UserDomainInterface) (model.UserDomainInterface, *rest_err.RestErr)
+        FindUserByEmail(email string) (model.UserDomainInterface, *rest_err.RestErr)
+        FindUserByID(userId string) (model.UserDomainInterface, *rest_err.RestErr)
+        UpdateUser(userId string, userDomain model.UserDomainInterface) *rest_err.RestErr
+        DeleteUser(userId string) *rest_err.RestErr
+        FindUserByEmailAndPassword(email, password string) (model.UserDomainInterface, *rest_err.RestErr)
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
