@@ -79,7 +79,7 @@
 				
 				<option value="file11">github.com/dlima78/gocourse/src/controller/routes/routes.go (0.0%)</option>
 				
-				<option value="file12">github.com/dlima78/gocourse/src/controller/update_user.go (81.2%)</option>
+				<option value="file12">github.com/dlima78/gocourse/src/controller/update_user.go (100.0%)</option>
 				
 				<option value="file13">github.com/dlima78/gocourse/src/controller/user_controller.go (100.0%)</option>
 				
@@ -799,7 +799,7 @@ func (uc *userControllerInterface) UpdateUser(c *gin.Context) <span class="cov8"
         )
 
         err := uc.service.UpdateUserService(userId, domain)
-        if err != nil </span><span class="cov0" title="0">{
+        if err != nil </span><span class="cov8" title="1">{
                 logger.Error(
                         "Error trying to call UpdateUser service",
                         err,
