@@ -95,7 +95,7 @@
 				
 				<option value="file19">github.com/dlima78/gocourse/src/model/service/mocks/mock_user_repository.go (0.0%)</option>
 				
-				<option value="file20">github.com/dlima78/gocourse/src/model/service/update_user.go (100.0%)</option>
+				<option value="file20">github.com/dlima78/gocourse/src/model/service/update_user.go (33.3%)</option>
 				
 				<option value="file21">github.com/dlima78/gocourse/src/model/service/user_interface.go (100.0%)</option>
 				
@@ -1079,28 +1079,41 @@ import (
         rest_err "github.com/dlima78/gocourse/src/configuration"
         "github.com/dlima78/gocourse/src/configuration/logger"
         "github.com/dlima78/gocourse/src/model"
+        "go.mongodb.org/mongo-driver/v2/bson"
         "go.uber.org/zap"
 )
 
 func (ud *userDomainService) UpdateUserService(userID string, userDomain model.UserDomainInterface) *rest_err.RestErr <span class="cov8" title="1">{
         logger.Info("Init update user model", zap.String("journey", "updateUser"))
 
-        // Verificar se o usuário existe
-        _, findErr := ud.userRepository.FindUserByID(userID)
-        if findErr != nil </span><span class="cov8" title="1">{
+        if _, err := bson.ObjectIDFromHex(userID); err != nil </span><span class="cov8" title="1">{
+                logger.Error("Error trying to validate userId",
+                        err,
+                        zap.String("journey", "findUserByID"),
+                )
+                errorMessage := rest_err.NewBadRequestError(
+                        "UserID is not a valid id",
+                )
+
+                return errorMessage
+
+        }</span>
+
+        <span class="cov0" title="0">_, findErr := ud.userRepository.FindUserByID(userID)
+        if findErr != nil </span><span class="cov0" title="0">{
                 logger.Error("User not found or error on find", findErr, zap.String("journey", "updateUser"))
                 return findErr
         }</span>
 
-        <span class="cov8" title="1">err := ud.userRepository.UpdateUser(userID, userDomain)
-        if err != nil </span><span class="cov8" title="1">{
+        <span class="cov0" title="0">err := ud.userRepository.UpdateUser(userID, userDomain)
+        if err != nil </span><span class="cov0" title="0">{
                 logger.Error("Error trying to call repository",
                         err,
                         zap.String("journey", "updateUser"))
                 return err
         }</span>
 
-        <span class="cov8" title="1">logger.Info(
+        <span class="cov0" title="0">logger.Info(
                 "updateUser service executed successfully",
                 zap.String("userId", userID),
                 zap.String("journey", "updateUser"),

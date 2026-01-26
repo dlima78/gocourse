@@ -68,6 +68,27 @@ func TestUpdateUserController_ValidationError(t *testing.T) {
 
 }
 
+func TestUpdateUserController_InvalidObjectID(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	ctx := mock_user_controller.GetTestingGinContext(recorder)
+	id := "123"
+
+	params := gin.Params{gin.Param{Key: "userId", Value: id}}
+	mock_user_controller.MakeRequest(
+		ctx,
+		params,
+		nil,
+		"PUT",
+		io.NopCloser(strings.NewReader(`{"name":"X"}`)))
+
+	mockService := new(mock_user_controller.MockUserService)
+	controller := NewUserController(mockService)
+	controller.UpdateUser(ctx)
+
+	assert.Equal(t, http.StatusBadRequest, recorder.Code)
+	mockService.AssertNotCalled(t, "UpdateUserService")
+}
+
 func TestUpdateUserController_NotFound(t *testing.T) {
 	recorder := httptest.NewRecorder()
 	context := mock_user_controller.GetTestingGinContext(recorder)

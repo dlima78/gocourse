@@ -10,7 +10,6 @@ import (
 func (ud *userDomainService) UpdateUserService(userID string, userDomain model.UserDomainInterface) *rest_err.RestErr {
 	logger.Info("Init update user model", zap.String("journey", "updateUser"))
 
-	// Verificar se o usuário existe
 	_, findErr := ud.userRepository.FindUserByID(userID)
 	if findErr != nil {
 		logger.Error("User not found or error on find", findErr, zap.String("journey", "updateUser"))
