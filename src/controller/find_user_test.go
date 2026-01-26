@@ -104,3 +104,20 @@ func TestFindUserByEmailController_Success(t *testing.T) {
 	assert.Equal(t, "João", resp.Name)
 	assert.Equal(t, 200, recorder.Code)
 }
+
+func TestFindUserByEmailController_InvalidEmail(t *testing.T) {
+	email := "invalidemail.com"
+	recorder := httptest.NewRecorder()
+	context := mock_user_controller.GetTestingGinContext(recorder)
+	mockService := new(mock_user_controller.MockUserService)
+
+	params := gin.Params{gin.Param{Key: "userEmail", Value: email}}
+	mock_user_controller.MakeRequest(context, params, nil, "GET", nil)
+
+	controller := NewUserController(mockService)
+	controller.FindUserByEmail(context)
+
+	assert.Equal(t, http.StatusBadRequest, recorder.Code)
+	mockService.AssertNotCalled(t, "FindUserByEmailService")
+
+}
