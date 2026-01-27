@@ -63,25 +63,3 @@ func TestUserRepository_CreateUser_DuplicateEmail(t *testing.T) {
 	// Você pode verificar o tipo de erro também:
 	// assert.Equal(t, "error message esperada", err2.Message)
 }
-
-// func TestUserRepository_CreateUser_InvalidEmail(t *testing.T) {
-// 	// Setup MongoDB com testcontainers
-// 	setup := SetupMongoDB(t, "user_database_test")
-// 	defer setup.Cleanup()
-
-// 	// Setar a variável de ambiente para o nome da coleção
-// 	originalValue := os.Getenv("MONGODB_USER_DB")
-// 	os.Setenv("MONGODB_USER_DB", "users")
-// 	defer os.Setenv("MONGODB_USER_DB", originalValue)
-
-// 	// Criar repositório com a conexão real
-// 	repo := NewUserRepository(setup.Database)
-
-// 	// Tentar criar usuário com email inválido
-// 	user := model.NewUserDomain("invalid-email", "password", "Test", 25)
-// 	result, err := repo.CreateUser(user)
-
-// 	// Assertions
-// 	assert.NotNil(t, err, "Should have error with invalid email")
-// 	assert.Nil(t, result, "Result should be nil when there is an error")
-// }
