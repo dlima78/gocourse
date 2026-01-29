@@ -67,7 +67,7 @@
 				
 				<option value="file5">github.com/dlima78/gocourse/src/model/repository/test_helper.go (59.1%)</option>
 				
-				<option value="file6">github.com/dlima78/gocourse/src/model/repository/update_user_repository.go (0.0%)</option>
+				<option value="file6">github.com/dlima78/gocourse/src/model/repository/update_user_repository.go (72.2%)</option>
 				
 				<option value="file7">github.com/dlima78/gocourse/src/model/repository/user_repository.go (100.0%)</option>
 				
@@ -109,7 +109,7 @@ import (
 
 func (ur *userRepository) CreateUser(
         userDomain model.UserDomainInterface,
-) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov10" title="7">{
+) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov10" title="8">{
         logger.Info("Init createUser repository",
                 zap.String("journey", "createUser"))
 
@@ -129,7 +129,7 @@ func (ur *userRepository) CreateUser(
                 return nil, rest_err.NewBadRequestError(errorMessage)
         }</span>
 
-        <span class="cov9" title="6">result, err := collection.InsertOne(context.Background(), value)
+        <span class="cov9" title="7">result, err := collection.InsertOne(context.Background(), value)
         if err != nil </span><span class="cov0" title="0">{
                 logger.Error("Error trying to create user",
                         err,
@@ -137,7 +137,7 @@ func (ur *userRepository) CreateUser(
                 return nil, rest_err.NewInternalServerError(err.Error())
         }</span>
 
-        <span class="cov9" title="6">value.ID = result.InsertedID.(bson.ObjectID)
+        <span class="cov9" title="7">value.ID = result.InsertedID.(bson.ObjectID)
 
         logger.Info("User inserted successfully",
                 zap.String("journey", "createUser"),
@@ -264,7 +264,7 @@ import (
         "go.uber.org/zap"
 )
 
-func (ur *userRepository) FindUserByEmail(email string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov10" title="10">{
+func (ur *userRepository) FindUserByEmail(email string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov10" title="11">{
         logger.Info("Init findUserByEmail repository",
                 zap.String("journey", "findUserByEmail"))
 
@@ -277,8 +277,8 @@ func (ur *userRepository) FindUserByEmail(email string) (model.UserDomainInterfa
         filter := bson.D{{Key: "email", Value: email}}
         err := collection.FindOne(context.Background(), filter).Decode(userEntity)
 
-        if err != nil </span><span class="cov9" title="8">{
-                if err == mongo.ErrNoDocuments </span><span class="cov9" title="8">{
+        if err != nil </span><span class="cov9" title="9">{
+                if err == mongo.ErrNoDocuments </span><span class="cov9" title="9">{
                         errorMessage := fmt.Sprintf("User not found with this email: %s", email)
                         logger.Error(errorMessage, err, zap.String("journey", "findUserByEmail"))
                         return nil, rest_err.NewNotFoundError(errorMessage)
@@ -298,7 +298,7 @@ func (ur *userRepository) FindUserByEmail(email string) (model.UserDomainInterfa
 
 func (ur *userRepository) FindUserByID(
         id string,
-) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov3" title="2">{
+) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov5" title="3">{
         logger.Info("Init findUserByID repository",
                 zap.String("journey", "findUserByID"),
                 zap.String("searchingForId", id))
@@ -315,7 +315,7 @@ func (ur *userRepository) FindUserByID(
                 return nil, rest_err.NewBadRequestError(errorMessage)
         }</span>
 
-        <span class="cov1" title="1">logger.Info("ObjectID parsed successfully",
+        <span class="cov3" title="2">logger.Info("ObjectID parsed successfully",
                 zap.String("journey", "findUserByID"),
                 zap.String("objectIdHex", objectId.Hex()))
 
@@ -348,7 +348,7 @@ func (ur *userRepository) FindUserByID(
                 return nil, rest_err.NewInternalServerError(errorMessage)</span>
         }
 
-        <span class="cov1" title="1">logger.Info("FindUserByID repository executed successfully",
+        <span class="cov3" title="2">logger.Info("FindUserByID repository executed successfully",
                 zap.String("journey", "findUserByID"),
                 zap.String("userId", userEntity.ID.Hex()))
         return converter.ConvertEntityToDomain(*userEntity), nil</span>
@@ -410,7 +410,7 @@ type MongoTestSetup struct {
 }
 
 // SetupMongoDB cria um container MongoDB e retorna a conexão pronta para usar
-func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class="cov10" title="9">{
+func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class="cov10" title="10">{
         ctx := context.Background()
 
         // Iniciar container MongoDB
@@ -420,14 +420,14 @@ func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class
         }</span>
 
         // Obter a string de conexão
-        <span class="cov10" title="9">mongoURI, err := mongodbContainer.ConnectionString(ctx)
+        <span class="cov10" title="10">mongoURI, err := mongodbContainer.ConnectionString(ctx)
         if err != nil </span><span class="cov0" title="0">{
                 mongodbContainer.Terminate(ctx)
                 t.Fatalf("Failed to get connection string: %v", err)
         }</span>
 
         // Conectar ao MongoDB
-        <span class="cov10" title="9">opts := options.Client().ApplyURI(mongoURI)
+        <span class="cov10" title="10">opts := options.Client().ApplyURI(mongoURI)
         client, err := mongo.Connect(opts)
         if err != nil </span><span class="cov0" title="0">{
                 mongodbContainer.Terminate(ctx)
@@ -435,13 +435,13 @@ func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class
         }</span>
 
         // Testar a conexão
-        <span class="cov10" title="9">if err := client.Ping(ctx, nil); err != nil </span><span class="cov0" title="0">{
+        <span class="cov10" title="10">if err := client.Ping(ctx, nil); err != nil </span><span class="cov0" title="0">{
                 client.Disconnect(ctx)
                 mongodbContainer.Terminate(ctx)
                 t.Fatalf("Failed to ping MongoDB: %v", err)
         }</span>
 
-        <span class="cov10" title="9">database := client.Database(databaseName)
+        <span class="cov10" title="10">database := client.Database(databaseName)
 
         return &amp;MongoTestSetup{
                 Client:    client,
@@ -452,11 +452,11 @@ func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class
 }
 
 // Cleanup encerra a conexão e termina o container
-func (m *MongoTestSetup) Cleanup() error <span class="cov10" title="9">{
+func (m *MongoTestSetup) Cleanup() error <span class="cov10" title="10">{
         if err := m.Client.Disconnect(m.Context); err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
-        <span class="cov10" title="9">return m.Container.Terminate(m.Context)</span>
+        <span class="cov10" title="10">return m.Container.Terminate(m.Context)</span>
 }
 </pre>
 		
@@ -478,7 +478,7 @@ import (
 func (ur *userRepository) UpdateUser(
         userId string,
         userDomain model.UserDomainInterface,
-) *rest_err.RestErr <span class="cov0" title="0">{
+) *rest_err.RestErr <span class="cov8" title="1">{
         logger.Info("Init updateUser repository",
                 zap.String("journey", "updateUser"))
 
@@ -496,7 +496,7 @@ func (ur *userRepository) UpdateUser(
                 return rest_err.NewBadRequestError(errorMessage)
         }</span>
 
-        <span class="cov0" title="0">filter := bson.D{{Key: "_id", Value: objectId}}
+        <span class="cov8" title="1">filter := bson.D{{Key: "_id", Value: objectId}}
         update := bson.D{{Key: "$set", Value: value}}
 
         result, err := collection.UpdateOne(context.Background(), filter, update)
@@ -507,7 +507,7 @@ func (ur *userRepository) UpdateUser(
                 return rest_err.NewInternalServerError(err.Error())
         }</span>
 
-        <span class="cov0" title="0">logger.Info("User updated successfully",
+        <span class="cov8" title="1">logger.Info("User updated successfully",
                 zap.String("journey", "updateUser"),
                 zap.String("matchedCount", fmt.Sprintf("%v", result.MatchedCount)),
                 zap.String("modifiedCount", fmt.Sprintf("%v", result.ModifiedCount)),
@@ -529,7 +529,7 @@ const (
         MONGODB_USER_DB = "MONGODB_USER_DB"
 )
 
-func NewUserRepository(database *mongo.Database) UserRepository <span class="cov10" title="9">{
+func NewUserRepository(database *mongo.Database) UserRepository <span class="cov10" title="10">{
         return &amp;userRepository{
                 database,
         }
