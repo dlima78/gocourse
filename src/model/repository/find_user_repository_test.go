@@ -109,8 +109,30 @@ func TestUserRepository_FindUserByEmailAndPassword_Success(t *testing.T) {
 
 	result, restErr := repo.FindUserByEmailAndPassword("test@mail.com", "test")
 
-	require.Nil(t, restErr, "Expected no error when finding user by id")
+	require.Nil(t, restErr, "Expected no error when finding user by email and password")
 	require.NotNil(t, result, "Expected to find a user")
 	require.Equal(t, "test@mail.com", result.GetEmail(), "Expected email to match")
+	require.Equal(t, "test", result.GetPassword(), "Expected password to match")
+	require.Equal(t, "Eduardo", result.GetName(), "Expected name to match")
+	require.Equal(t, int8(46), result.GetAge(), "Expected age to match")
+
+}
+
+func TestUserRepository_FindUserByEmailAndPassword_Error(t *testing.T) {
+	setup := SetupMongoDB(t, "user_database_test")
+	defer setup.Cleanup()
+
+	// Setar a variável de ambiente para o nome da coleção
+	originalValue := os.Getenv("MONGODB_USER_DB")
+	os.Setenv("MONGODB_USER_DB", "users")
+	defer os.Setenv("MONGODB_USER_DB", originalValue)
+
+	repo := NewUserRepository(setup.Database)
+
+	result, restErr := repo.FindUserByEmailAndPassword("test@mail.com", "test")
+
+	require.NotNil(t, restErr, "Expected error when finding user by email and password")
+	require.Nil(t, result, "Expected to find a user")
+	require.Equal(t, 401, restErr.Code, "Expected 401 error code for unauthorized")
 
 }

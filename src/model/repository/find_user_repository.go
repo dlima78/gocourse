@@ -128,7 +128,7 @@ func (ur *userRepository) FindUserByEmailAndPassword(email, password string) (mo
 			return nil, rest_err.NewUnauthorizedError(errorMessage)
 		}
 		errorMessage := "Error trying to find user by email and password"
-		logger.Error(errorMessage, err, zap.String("journey", "	findUserByEmailAndPassword"))
+		logger.Error(errorMessage, err, zap.String("journey", "findUserByEmailAndPassword"))
 		return nil, rest_err.NewInternalServerError(errorMessage)
 	}
 

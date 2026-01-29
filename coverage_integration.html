@@ -63,7 +63,7 @@
 				
 				<option value="file3">github.com/dlima78/gocourse/src/model/repository/entity/converter/convert_entity_to_domain.go (0.0%)</option>
 				
-				<option value="file4">github.com/dlima78/gocourse/src/model/repository/find_user_repository.go (69.1%)</option>
+				<option value="file4">github.com/dlima78/gocourse/src/model/repository/find_user_repository.go (76.4%)</option>
 				
 				<option value="file5">github.com/dlima78/gocourse/src/model/repository/test_helper.go (59.1%)</option>
 				
@@ -354,7 +354,7 @@ func (ur *userRepository) FindUserByID(
         return converter.ConvertEntityToDomain(*userEntity), nil</span>
 }
 
-func (ur *userRepository) FindUserByEmailAndPassword(email, password string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov1" title="1">{
+func (ur *userRepository) FindUserByEmailAndPassword(email, password string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov3" title="2">{
         logger.Info("Init findUserByEmailAndPassword repository",
                 zap.String("journey", "findUserByEmailAndPassword"))
 
@@ -370,14 +370,14 @@ func (ur *userRepository) FindUserByEmailAndPassword(email, password string) (mo
         }
         err := collection.FindOne(context.Background(), filter).Decode(userEntity)
 
-        if err != nil </span><span class="cov0" title="0">{
-                if err == mongo.ErrNoDocuments </span><span class="cov0" title="0">{
+        if err != nil </span><span class="cov1" title="1">{
+                if err == mongo.ErrNoDocuments </span><span class="cov1" title="1">{
                         errorMessage := "User or password invalid"
                         logger.Error(errorMessage, err, zap.String("journey", "findUserByEmailAndPassword"))
                         return nil, rest_err.NewUnauthorizedError(errorMessage)
                 }</span>
                 <span class="cov0" title="0">errorMessage := "Error trying to find user by email and password"
-                logger.Error(errorMessage, err, zap.String("journey", "        findUserByEmailAndPassword"))
+                logger.Error(errorMessage, err, zap.String("journey", "findUserByEmailAndPassword"))
                 return nil, rest_err.NewInternalServerError(errorMessage)</span>
         }
 
@@ -410,7 +410,7 @@ type MongoTestSetup struct {
 }
 
 // SetupMongoDB cria um container MongoDB e retorna a conexão pronta para usar
-func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class="cov10" title="8">{
+func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class="cov10" title="9">{
         ctx := context.Background()
 
         // Iniciar container MongoDB
@@ -420,14 +420,14 @@ func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class
         }</span>
 
         // Obter a string de conexão
-        <span class="cov10" title="8">mongoURI, err := mongodbContainer.ConnectionString(ctx)
+        <span class="cov10" title="9">mongoURI, err := mongodbContainer.ConnectionString(ctx)
         if err != nil </span><span class="cov0" title="0">{
                 mongodbContainer.Terminate(ctx)
                 t.Fatalf("Failed to get connection string: %v", err)
         }</span>
 
         // Conectar ao MongoDB
-        <span class="cov10" title="8">opts := options.Client().ApplyURI(mongoURI)
+        <span class="cov10" title="9">opts := options.Client().ApplyURI(mongoURI)
         client, err := mongo.Connect(opts)
         if err != nil </span><span class="cov0" title="0">{
                 mongodbContainer.Terminate(ctx)
@@ -435,13 +435,13 @@ func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class
         }</span>
 
         // Testar a conexão
-        <span class="cov10" title="8">if err := client.Ping(ctx, nil); err != nil </span><span class="cov0" title="0">{
+        <span class="cov10" title="9">if err := client.Ping(ctx, nil); err != nil </span><span class="cov0" title="0">{
                 client.Disconnect(ctx)
                 mongodbContainer.Terminate(ctx)
                 t.Fatalf("Failed to ping MongoDB: %v", err)
         }</span>
 
-        <span class="cov10" title="8">database := client.Database(databaseName)
+        <span class="cov10" title="9">database := client.Database(databaseName)
 
         return &amp;MongoTestSetup{
                 Client:    client,
@@ -452,11 +452,11 @@ func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class
 }
 
 // Cleanup encerra a conexão e termina o container
-func (m *MongoTestSetup) Cleanup() error <span class="cov10" title="8">{
+func (m *MongoTestSetup) Cleanup() error <span class="cov10" title="9">{
         if err := m.Client.Disconnect(m.Context); err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
-        <span class="cov10" title="8">return m.Container.Terminate(m.Context)</span>
+        <span class="cov10" title="9">return m.Container.Terminate(m.Context)</span>
 }
 </pre>
 		
@@ -529,7 +529,7 @@ const (
         MONGODB_USER_DB = "MONGODB_USER_DB"
 )
 
-func NewUserRepository(database *mongo.Database) UserRepository <span class="cov10" title="8">{
+func NewUserRepository(database *mongo.Database) UserRepository <span class="cov10" title="9">{
         return &amp;userRepository{
                 database,
         }
