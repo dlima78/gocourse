@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -9,6 +10,7 @@ import (
 
 	rest_err "github.com/dlima78/gocourse/src/configuration"
 	mock_user_controller "github.com/dlima78/gocourse/src/controller/mocks"
+	"github.com/dlima78/gocourse/src/controller/model/request"
 	"github.com/dlima78/gocourse/src/model"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -20,7 +22,13 @@ func TestUpdateUserController_Success(t *testing.T) {
 	context := mock_user_controller.GetTestingGinContext(recorder)
 
 	id := "507f1f77bcf86cd799439011" // 24-char hex id
-	body := `{"name":"Novo Nome","age":31}`
+
+	userUpdateRequest := request.UserUpdateRequest{
+		Name: "Eduardo",
+		Age:  31,
+	}
+
+	body, _ := json.Marshal(userUpdateRequest)
 
 	mockService := new(mock_user_controller.MockUserService)
 	params := gin.Params{gin.Param{Key: "userId", Value: id}}
@@ -29,10 +37,10 @@ func TestUpdateUserController_Success(t *testing.T) {
 		params,
 		nil,
 		"PUT",
-		io.NopCloser(strings.NewReader(body)))
+		io.NopCloser(strings.NewReader(string(body))))
 
 	mockService.On("UpdateUserService", id, mock.MatchedBy(func(u model.UserDomainInterface) bool {
-		return u.GetName() == "Novo Nome" && u.GetAge() == 31
+		return u.GetName() == "Eduardo" && u.GetAge() == 31
 	})).Return(nil)
 
 	controller := NewUserController(mockService)
@@ -49,7 +57,12 @@ func TestUpdateUserController_ValidationError(t *testing.T) {
 	context := mock_user_controller.GetTestingGinContext(recorder)
 
 	id := "507f1f77bcf86cd799439011"
-	body := `{"name":"a"}`
+	userUpdateRequest := request.UserUpdateRequest{
+		Name: "Eduardo",
+	}
+
+	body, _ := json.Marshal(userUpdateRequest)
+
 	mockService := new(mock_user_controller.MockUserService)
 
 	params := gin.Params{gin.Param{Key: "userId", Value: id}}
@@ -58,7 +71,7 @@ func TestUpdateUserController_ValidationError(t *testing.T) {
 		params,
 		nil,
 		"PUT",
-		io.NopCloser(strings.NewReader(body)))
+		io.NopCloser(strings.NewReader(string(body))))
 
 	controller := NewUserController(mockService)
 	controller.UpdateUser(context)
@@ -94,7 +107,12 @@ func TestUpdateUserController_NotFound(t *testing.T) {
 	context := mock_user_controller.GetTestingGinContext(recorder)
 
 	id := "507f1f77bcf86cd799439011"
-	body := `{"name":"Novo Nome","age":31}`
+	userUpdateRequest := request.UserUpdateRequest{
+		Name: "Eduardo",
+		Age:  31,
+	}
+
+	body, _ := json.Marshal(userUpdateRequest)
 
 	mockService := new(mock_user_controller.MockUserService)
 	params := gin.Params{gin.Param{Key: "userId", Value: id}}
@@ -103,7 +121,7 @@ func TestUpdateUserController_NotFound(t *testing.T) {
 		params,
 		nil,
 		"PUT",
-		io.NopCloser(strings.NewReader(body)))
+		io.NopCloser(strings.NewReader(string(body))))
 
 	errResp := rest_err.NewBadRequestError("user not found")
 

@@ -11,6 +11,7 @@ import (
 
 	rest_err "github.com/dlima78/gocourse/src/configuration"
 	mock_user_controller "github.com/dlima78/gocourse/src/controller/mocks"
+	"github.com/dlima78/gocourse/src/controller/model/request"
 	responseModel "github.com/dlima78/gocourse/src/controller/model/response"
 	"github.com/dlima78/gocourse/src/model"
 	"github.com/stretchr/testify/assert"
@@ -23,16 +24,27 @@ func TestCreateUserController_Success(t *testing.T) {
 	recorder := httptest.NewRecorder()
 	context := mock_user_controller.GetTestingGinContext(recorder)
 
-	body := `{"email":"test@example.com","password":"pass!23","name":"João","age":30}`
-	mock_user_controller.MakeRequest(context, gin.Params{}, url.Values{}, "POST", io.NopCloser(bytes.NewBufferString(body)))
+	userRequest := request.UserRequest{
+		Email:    "test@mail.com",
+		Password: "TEste@123",
+		Name:     "João",
+		Age:      45,
+	}
+
+	body, _ := json.Marshal(userRequest)
+	mock_user_controller.MakeRequest(
+		context, gin.Params{},
+		url.Values{},
+		"POST",
+		io.NopCloser(bytes.NewBufferString(string(body))))
 
 	mockService := new(mock_user_controller.MockUserService)
 
 	var captured model.UserDomainInterface
-	createdUser := model.NewUserDomain("test@example.com", "pass!23", "João", 30)
-	createdUser.SetID("123")
+	createdUser := model.NewUserDomain("test@mail.com", "TEste@123", "João", 45)
+	userID := createdUser.GetID()
 	mockService.On("CreateUserService", mock.MatchedBy(func(u model.UserDomainInterface) bool {
-		return u.GetEmail() == "test@example.com" && u.GetName() == "João"
+		return u.GetEmail() == "test@mail.com" && u.GetName() == "João"
 	})).
 		Return(createdUser, nil).
 		Run(func(args mock.Arguments) {
@@ -42,14 +54,14 @@ func TestCreateUserController_Success(t *testing.T) {
 	uc := NewUserController(mockService)
 	uc.CreateUser(context)
 
-	assert.Equal(t, "test@example.com", captured.GetEmail())
+	assert.Equal(t, "test@mail.com", captured.GetEmail())
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
 
 	var resp responseModel.UserResponse
 	err := json.Unmarshal(recorder.Body.Bytes(), &resp)
 	assert.NoError(t, err)
-	assert.Equal(t, "123", resp.ID)
-	assert.Equal(t, "test@example.com", resp.Email)
+	assert.Equal(t, userID, resp.ID)
+	assert.Equal(t, "test@mail.com", resp.Email)
 	assert.Equal(t, "João", resp.Name)
 
 	mockService.AssertExpectations(t)
@@ -59,9 +71,19 @@ func TestCreateUserController_ValidationError(t *testing.T) {
 	recorder := httptest.NewRecorder()
 	context := mock_user_controller.GetTestingGinContext(recorder)
 
-	// corpo inválido: falta o campo email
-	body := `{"password":"pass!23","name":"João","age":30}`
-	mock_user_controller.MakeRequest(context, gin.Params{}, url.Values{}, "POST", io.NopCloser(bytes.NewBufferString(body)))
+	userRequest := request.UserRequest{
+		Email:    "wrongemail.com",
+		Password: "TEste@123",
+		Name:     "João",
+		Age:      45,
+	}
+
+	body, _ := json.Marshal(userRequest)
+	mock_user_controller.MakeRequest(
+		context, gin.Params{},
+		url.Values{},
+		"POST",
+		io.NopCloser(bytes.NewBufferString(string(body))))
 
 	mockService := new(mock_user_controller.MockUserService)
 
@@ -82,8 +104,25 @@ func TestCreateUserController_DuplicateEmail(t *testing.T) {
 	recorder := httptest.NewRecorder()
 	context := mock_user_controller.GetTestingGinContext(recorder)
 
-	body := `{"email":"duplicate@example.com","password":"pass!23","name":"João","age":30}`
-	mock_user_controller.MakeRequest(context, gin.Params{}, url.Values{}, "POST", io.NopCloser(bytes.NewBufferString(body)))
+	userRequest := request.UserRequest{
+		Email:    "test@mail.com",
+		Password: "TEste@123",
+		Name:     "João",
+		Age:      45,
+	}
+
+	body, _ := json.Marshal(userRequest)
+	mock_user_controller.MakeRequest(
+		context, gin.Params{},
+		url.Values{},
+		"POST",
+		io.NopCloser(bytes.NewBufferString(string(body))))
+	mock_user_controller.MakeRequest(
+		context,
+		gin.Params{},
+		url.Values{},
+		"POST",
+		io.NopCloser(bytes.NewBufferString(string(body))))
 
 	mockService := new(mock_user_controller.MockUserService)
 	errResp := rest_err.NewBadRequestError("Email already exists")
