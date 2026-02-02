@@ -435,7 +435,7 @@ var (
         UserDomainInterface model.UserDomainInterface
 )
 
-func (uc *userControllerInterface) CreateUser(c *gin.Context) <span class="cov10" title="3">{
+func (uc *userControllerInterface) CreateUser(c *gin.Context) <span class="cov10" title="4">{
         logger.Info("About to start user application",
                 zap.String("journey", "createUser"),
         )
@@ -450,7 +450,7 @@ func (uc *userControllerInterface) CreateUser(c *gin.Context) <span class="cov10
                 return
         }</span>
 
-        <span class="cov6" title="2">domain := model.NewUserDomain(
+        <span class="cov8" title="3">domain := model.NewUserDomain(
                 userRequest.Email,
                 userRequest.Password,
                 userRequest.Name,
@@ -458,7 +458,7 @@ func (uc *userControllerInterface) CreateUser(c *gin.Context) <span class="cov10
         )
 
         domainResult, err := uc.service.CreateUserService(domain)
-        if err != nil </span><span class="cov1" title="1">{
+        if err != nil </span><span class="cov5" title="2">{
                 logger.Error(
                         "Error trying to call CreateUser service",
                         err,
@@ -796,7 +796,7 @@ import (
         "go.uber.org/zap"
 )
 
-func (uc *userControllerInterface) UpdateUser(c *gin.Context) <span class="cov10" title="4">{
+func (uc *userControllerInterface) UpdateUser(c *gin.Context) <span class="cov10" title="3">{
         logger.Info("About to start user application",
                 zap.String("journey", "updateUser"),
         )
@@ -805,7 +805,7 @@ func (uc *userControllerInterface) UpdateUser(c *gin.Context) <span class="cov10
         userId := c.Param("userId")
 
         if err := c.ShouldBindJSON(&amp;userUpdateRequest); err != nil ||
-                strings.TrimSpace(userId) == "" </span><span class="cov5" title="2">{
+                strings.TrimSpace(userId) == "" </span><span class="cov1" title="1">{
                 logger.Error("Error trying to validate user info,", err,
                         zap.String("journey", "updateUser"))
                 restErr := validation.ValidateUserError(err)
@@ -814,7 +814,7 @@ func (uc *userControllerInterface) UpdateUser(c *gin.Context) <span class="cov10
                 return
         }</span>
 
-        <span class="cov5" title="2">domain := model.NewUserUpdateDomain(
+        <span class="cov6" title="2">domain := model.NewUserUpdateDomain(
                 userUpdateRequest.Name,
                 userUpdateRequest.Age,
         )

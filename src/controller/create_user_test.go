@@ -140,3 +140,34 @@ func TestCreateUserController_DuplicateEmail(t *testing.T) {
 
 	mockService.AssertExpectations(t)
 }
+
+func TestCreateUserController_ServerError(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	context := mock_user_controller.GetTestingGinContext(recorder)
+
+	userRequest := request.UserRequest{
+		Email:    "test@mail.com",
+		Password: "TEste@123",
+		Name:     "João",
+		Age:      45,
+	}
+
+	body, _ := json.Marshal(userRequest)
+	mock_user_controller.MakeRequest(
+		context, gin.Params{},
+		url.Values{},
+		"POST",
+		io.NopCloser(bytes.NewBufferString(string(body))))
+
+	mockService := new(mock_user_controller.MockUserService)
+
+	error := rest_err.NewInternalServerError("Error trying to create user")
+
+	mockService.On("CreateUserService", mock.Anything).Return(nil, error)
+
+	uc := NewUserController(mockService)
+	uc.CreateUser(context)
+
+	assert.Equal(t, 500, recorder.Code)
+
+}
