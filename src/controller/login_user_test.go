@@ -12,6 +12,8 @@ import (
 	rest_err "github.com/dlima78/gocourse/src/configuration"
 	mock_user_controller "github.com/dlima78/gocourse/src/controller/mocks"
 	"github.com/dlima78/gocourse/src/controller/model/request"
+	responseModel "github.com/dlima78/gocourse/src/controller/model/response"
+	"github.com/dlima78/gocourse/src/model"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -72,5 +74,46 @@ func TestLoginUserController_ServerError(t *testing.T) {
 	uc.LoginUser(context)
 
 	assert.Equal(t, http.StatusInternalServerError, recorder.Code)
+	mockService.AssertExpectations(t)
+}
+
+func TestLoginUserController_Success(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	context := mock_user_controller.GetTestingGinContext(recorder)
+
+	userLoginRequest := request.UserLoginRequest{
+		Email:    "test@email.com",
+		Password: "TEste@123",
+	}
+
+	body, _ := json.Marshal(userLoginRequest)
+	mock_user_controller.MakeRequest(
+		context, gin.Params{},
+		url.Values{},
+		"POST",
+		io.NopCloser(bytes.NewBufferString(string(body))))
+
+	mockService := new(mock_user_controller.MockUserService)
+
+	domainResult := model.NewUserDomain("test@email.com", "TEste@123", "João", 45)
+	userID := domainResult.GetID()
+	token := "token-jwt-example"
+
+	mockService.On("LoginUserService", mock.Anything).
+		Return(domainResult, token, nil)
+
+	uc := NewUserController(mockService)
+	uc.LoginUser(context)
+
+	assert.EqualValues(t, http.StatusOK, recorder.Code)
+	assert.Equal(t, token, recorder.Header().Get("Authorization"))
+
+	var resp responseModel.UserResponse
+	err := json.Unmarshal(recorder.Body.Bytes(), &resp)
+	assert.NoError(t, err)
+	assert.Equal(t, userID, resp.ID)
+	assert.Equal(t, "test@email.com", resp.Email)
+	assert.Equal(t, "João", resp.Name)
+
 	mockService.AssertExpectations(t)
 }

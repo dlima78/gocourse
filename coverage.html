@@ -71,7 +71,7 @@
 				
 				<option value="file7">github.com/dlima78/gocourse/src/controller/find_user.go (100.0%)</option>
 				
-				<option value="file8">github.com/dlima78/gocourse/src/controller/login_user.go (81.2%)</option>
+				<option value="file8">github.com/dlima78/gocourse/src/controller/login_user.go (100.0%)</option>
 				
 				<option value="file9">github.com/dlima78/gocourse/src/controller/mocks/mock_gin.go (0.0%)</option>
 				
@@ -609,7 +609,7 @@ import (
         "go.uber.org/zap"
 )
 
-func (uc *userControllerInterface) LoginUser(c *gin.Context) <span class="cov10" title="2">{
+func (uc *userControllerInterface) LoginUser(c *gin.Context) <span class="cov10" title="3">{
         logger.Info("Init login user application",
                 zap.String("journey", "loginUser"),
         )
@@ -624,7 +624,7 @@ func (uc *userControllerInterface) LoginUser(c *gin.Context) <span class="cov10"
                 return
         }</span>
 
-        <span class="cov1" title="1">domain := model.NewUserLoginDomain(
+        <span class="cov6" title="2">domain := model.NewUserLoginDomain(
                 userLoginRequest.Email,
                 userLoginRequest.Password,
         )
@@ -640,7 +640,7 @@ func (uc *userControllerInterface) LoginUser(c *gin.Context) <span class="cov10"
                 return
         }</span>
 
-        <span class="cov0" title="0">logger.Info(
+        <span class="cov1" title="1">logger.Info(
                 "CreateUser controller executed successfully",
                 zap.String("userId", domainResult.GetID()),
                 zap.String("journey", "createUser"),
@@ -846,7 +846,7 @@ import (
         "github.com/gin-gonic/gin"
 )
 
-func NewUserController(service service.UserDomainService) UserControllerInterface <span class="cov10" title="18">{
+func NewUserController(service service.UserDomainService) UserControllerInterface <span class="cov10" title="19">{
         return &amp;userControllerInterface{
                 service: service,
         }
