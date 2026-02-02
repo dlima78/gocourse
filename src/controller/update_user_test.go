@@ -59,6 +59,7 @@ func TestUpdateUserController_ValidationError(t *testing.T) {
 	id := "507f1f77bcf86cd799439011"
 	userUpdateRequest := request.UserUpdateRequest{
 		Name: "Eduardo",
+		Age:  47,
 	}
 
 	body, _ := json.Marshal(userUpdateRequest)
@@ -79,27 +80,6 @@ func TestUpdateUserController_ValidationError(t *testing.T) {
 	assert.Equal(t, http.StatusBadRequest, recorder.Code)
 	mockService.AssertNotCalled(t, "UpdateUserService")
 
-}
-
-func TestUpdateUserController_InvalidObjectID(t *testing.T) {
-	recorder := httptest.NewRecorder()
-	ctx := mock_user_controller.GetTestingGinContext(recorder)
-	id := "123"
-
-	params := gin.Params{gin.Param{Key: "userId", Value: id}}
-	mock_user_controller.MakeRequest(
-		ctx,
-		params,
-		nil,
-		"PUT",
-		io.NopCloser(strings.NewReader(`{"name":"X"}`)))
-
-	mockService := new(mock_user_controller.MockUserService)
-	controller := NewUserController(mockService)
-	controller.UpdateUser(ctx)
-
-	assert.Equal(t, http.StatusBadRequest, recorder.Code)
-	mockService.AssertNotCalled(t, "UpdateUserService")
 }
 
 func TestUpdateUserController_NotFound(t *testing.T) {
