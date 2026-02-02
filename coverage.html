@@ -71,7 +71,7 @@
 				
 				<option value="file7">github.com/dlima78/gocourse/src/controller/find_user.go (100.0%)</option>
 				
-				<option value="file8">github.com/dlima78/gocourse/src/controller/login_user.go (0.0%)</option>
+				<option value="file8">github.com/dlima78/gocourse/src/controller/login_user.go (81.2%)</option>
 				
 				<option value="file9">github.com/dlima78/gocourse/src/controller/mocks/mock_gin.go (0.0%)</option>
 				
@@ -609,13 +609,13 @@ import (
         "go.uber.org/zap"
 )
 
-func (uc *userControllerInterface) LoginUser(c *gin.Context) <span class="cov0" title="0">{
+func (uc *userControllerInterface) LoginUser(c *gin.Context) <span class="cov10" title="2">{
         logger.Info("Init login user application",
                 zap.String("journey", "loginUser"),
         )
         var userLoginRequest request.UserLoginRequest
 
-        if err := c.ShouldBindJSON(&amp;userLoginRequest); err != nil </span><span class="cov0" title="0">{
+        if err := c.ShouldBindJSON(&amp;userLoginRequest); err != nil </span><span class="cov1" title="1">{
                 logger.Error("Error trying to validate user info,", err,
                         zap.String("journey", "loginUser"))
                 restErr := validation.ValidateUserError(err)
@@ -624,14 +624,14 @@ func (uc *userControllerInterface) LoginUser(c *gin.Context) <span class="cov0" 
                 return
         }</span>
 
-        <span class="cov0" title="0">domain := model.NewUserLoginDomain(
+        <span class="cov1" title="1">domain := model.NewUserLoginDomain(
                 userLoginRequest.Email,
                 userLoginRequest.Password,
         )
 
         domainResult, token, err := uc.service.LoginUserService(domain)
 
-        if err != nil </span><span class="cov0" title="0">{
+        if err != nil </span><span class="cov1" title="1">{
                 logger.Error(
                         "Error trying to call CreateUser service",
                         err,
@@ -846,7 +846,7 @@ import (
         "github.com/gin-gonic/gin"
 )
 
-func NewUserController(service service.UserDomainService) UserControllerInterface <span class="cov10" title="16">{
+func NewUserController(service service.UserDomainService) UserControllerInterface <span class="cov10" title="18">{
         return &amp;userControllerInterface{
                 service: service,
         }
@@ -1585,7 +1585,9 @@ import (
         "go.uber.org/zap"
 )
 
-func (ud *userDomainService) LoginUserService(userDomain model.UserDomainInterface) (model.UserDomainInterface, string, *rest_err.RestErr) <span class="cov0" title="0">{
+func (ud *userDomainService) LoginUserService(
+        userDomain model.UserDomainInterface,
+) (model.UserDomainInterface, string, *rest_err.RestErr) <span class="cov0" title="0">{
         logger.Info("Init login user model", zap.String("journey", "loginUser"))
 
         userDomain.EncryptPassword()

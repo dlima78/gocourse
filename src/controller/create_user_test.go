@@ -168,6 +168,6 @@ func TestCreateUserController_ServerError(t *testing.T) {
 	uc := NewUserController(mockService)
 	uc.CreateUser(context)
 
-	assert.Equal(t, 500, recorder.Code)
+	assert.Equal(t, http.StatusInternalServerError, recorder.Code)
 
 }

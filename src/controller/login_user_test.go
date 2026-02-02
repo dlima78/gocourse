@@ -1,0 +1,76 @@
+package controller
+
+import (
+	"bytes"
+	"encoding/json"
+	"io"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
+	"testing"
+
+	rest_err "github.com/dlima78/gocourse/src/configuration"
+	mock_user_controller "github.com/dlima78/gocourse/src/controller/mocks"
+	"github.com/dlima78/gocourse/src/controller/model/request"
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+)
+
+func TestLoginUserController_ValidationError(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	context := mock_user_controller.GetTestingGinContext(recorder)
+
+	userLoginRequest := request.UserLoginRequest{
+		Email:    "wrongemail.com",
+		Password: "TEste@123",
+	}
+
+	body, _ := json.Marshal(userLoginRequest)
+	mock_user_controller.MakeRequest(
+		context, gin.Params{},
+		url.Values{},
+		"POST",
+		io.NopCloser(bytes.NewBufferString(string(body))))
+
+	mockService := new(mock_user_controller.MockUserService)
+
+	uc := NewUserController(mockService)
+	uc.LoginUser(context)
+
+	var errResp rest_err.RestErr
+	err := json.Unmarshal(recorder.Body.Bytes(), &errResp)
+	assert.NoError(t, err)
+	assert.Equal(t, http.StatusBadRequest, errResp.Code)
+
+	mockService.AssertNotCalled(t, "LoginUserService")
+}
+
+func TestLoginUserController_ServerError(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	context := mock_user_controller.GetTestingGinContext(recorder)
+
+	userLoginRequest := request.UserLoginRequest{
+		Email:    "test@email.com",
+		Password: "TEste@123",
+	}
+
+	body, _ := json.Marshal(userLoginRequest)
+	mock_user_controller.MakeRequest(
+		context, gin.Params{},
+		url.Values{},
+		"POST",
+		io.NopCloser(bytes.NewBufferString(string(body))))
+
+	mockService := new(mock_user_controller.MockUserService)
+
+	error := rest_err.NewInternalServerError("Error trying to create user")
+
+	mockService.On("LoginUserService", mock.Anything).Return(nil, "", error)
+
+	uc := NewUserController(mockService)
+	uc.LoginUser(context)
+
+	assert.Equal(t, http.StatusInternalServerError, recorder.Code)
+	mockService.AssertExpectations(t)
+}
