@@ -58,7 +58,7 @@ func TestUpdateUserController_ValidationError(t *testing.T) {
 
 	id := "507f1f77bcf86cd799439011"
 	userUpdateRequest := request.UserUpdateRequest{
-		Name: "Eduardo",
+		Name: "E",
 		Age:  47,
 	}
 
