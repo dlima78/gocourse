@@ -106,7 +106,7 @@ func TestLoginUserController_Success(t *testing.T) {
 	uc.LoginUser(context)
 
 	assert.EqualValues(t, http.StatusOK, recorder.Code)
-	assert.Equal(t, token, recorder.Header().Get("Authorization"))
+	assert.EqualValues(t, token, recorder.Header().Values("Authorization")[0], token)
 
 	var resp responseModel.UserResponse
 	err := json.Unmarshal(recorder.Body.Bytes(), &resp)
