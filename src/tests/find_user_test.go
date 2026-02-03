@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -14,6 +15,7 @@ import (
 	"github.com/dlima78/gocourse/src/tests/connection"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
@@ -53,5 +55,26 @@ func TestFindUserByEmail(t *testing.T) {
 		UserController.FindUserByEmail(context)
 
 		assert.EqualValues(t, http.StatusNotFound, recorder.Code)
+	})
+
+	t.Run("user_found_with_this_specified_email", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		ctx := mock_user_controller.GetTestingGinContext(recorder)
+		id := bson.NewObjectID().Hex()
+
+		_, err := Database.
+			Collection("test_user").
+			InsertOne(context.Background(), bson.M{"_id": id, "name": t.Name(), "email": "teste@mail.com"})
+		if err != nil {
+			t.Fatal(err)
+			return
+		}
+
+		params := gin.Params{gin.Param{Key: "userEmail", Value: "teste@mail.com"}}
+		mock_user_controller.MakeRequest(ctx, params, url.Values{}, "GET", nil)
+
+		UserController.FindUserByEmail(ctx)
+
+		assert.EqualValues(t, http.StatusOK, recorder.Code)
 	})
 }
