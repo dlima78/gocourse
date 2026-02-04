@@ -78,3 +78,39 @@ func TestFindUserByEmail(t *testing.T) {
 		assert.EqualValues(t, http.StatusOK, recorder.Code)
 	})
 }
+
+func TestFindUserByID(t *testing.T) {
+	t.Run("user_not_found_with_this_ID", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		context := mock_user_controller.GetTestingGinContext(recorder)
+		id := bson.NewObjectID().Hex()
+
+		params := gin.Params{gin.Param{Key: "userId", Value: id}}
+		mock_user_controller.MakeRequest(context, params, url.Values{}, "GET", nil)
+
+		UserController.FindUserByID(context)
+
+		assert.EqualValues(t, http.StatusNotFound, recorder.Code)
+	})
+
+	t.Run("user_found_with_this_specified_ID", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		ctx := mock_user_controller.GetTestingGinContext(recorder)
+		id := bson.NewObjectID()
+
+		_, err := Database.
+			Collection("test_user").
+			InsertOne(context.Background(), bson.M{"_id": id, "name": t.Name(), "email": "teste@mail.com"})
+		if err != nil {
+			t.Fatal(err)
+			return
+		}
+
+		params := gin.Params{gin.Param{Key: "userId", Value: id.Hex()}}
+		mock_user_controller.MakeRequest(ctx, params, url.Values{}, "GET", nil)
+
+		UserController.FindUserByID(ctx)
+
+		assert.EqualValues(t, http.StatusOK, recorder.Code)
+	})
+}

@@ -121,7 +121,9 @@
 				
 				<option value="file32">github.com/dlima78/gocourse/src/model/user_token_domain.go (0.0%)</option>
 				
-				<option value="file33">github.com/dlima78/gocourse/src/view/convert_domain_to_response.go (0.0%)</option>
+				<option value="file33">github.com/dlima78/gocourse/src/tests/connection/open_connection.go (0.0%)</option>
+				
+				<option value="file34">github.com/dlima78/gocourse/src/view/convert_domain_to_response.go (0.0%)</option>
 				
 				</select>
 			</div>
@@ -1775,7 +1777,72 @@ func RemoveBearerPrefix(token string) string <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file33" style="display: none">package view
+		<pre class="file" id="file33" style="display: none">package connection
+
+import (
+        "context"
+        "fmt"
+        "log"
+        "os"
+
+        "github.com/ory/dockertest/v3"
+        "go.mongodb.org/mongo-driver/v2/mongo"
+        "go.mongodb.org/mongo-driver/v2/mongo/options"
+)
+
+func OpenConnection() (database *mongo.Database, close func()) <span class="cov0" title="0">{
+        pool, err := dockertest.NewPool("")
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatalf("Could not construct pool: %s", err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">resource, err := pool.RunWithOptions(&amp;dockertest.RunOptions{
+                Repository: "mongo",
+                Tag:        "latest",
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatalf("Could not create mongo container: %s", err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">var client *mongo.Client
+        uri := fmt.Sprintf("mongodb://127.0.0.1:%s", resource.GetPort("27017/tcp"))
+
+        if err := pool.Retry(func() error </span><span class="cov0" title="0">{
+                var err error
+
+                client, err = mongo.Connect(options.Client().ApplyURI(uri))
+                if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+
+                <span class="cov0" title="0">return client.Ping(context.TODO(), nil)</span>
+        }); err != nil <span class="cov0" title="0">{
+                log.Fatalf("Could not connect to docker: %s", err)
+        }</span>
+
+        <span class="cov0" title="0">dbName := os.Getenv("MONGODB_USER_DB")
+        if dbName == "" </span><span class="cov0" title="0">{
+                dbName = "test_db"
+        }</span>
+
+        <span class="cov0" title="0">database = client.Database(dbName)
+
+        close = func() </span><span class="cov0" title="0">{
+                if err := client.Disconnect(context.TODO()); err != nil </span><span class="cov0" title="0">{
+                        log.Printf("Error disconnecting mongo: %s", err)
+                }</span>
+                <span class="cov0" title="0">if err := pool.Purge(resource); err != nil </span><span class="cov0" title="0">{
+                        log.Printf("Error purging resource: %s", err)
+                }</span>
+        }
+
+        <span class="cov0" title="0">return</span>
+}
+</pre>
+		
+		<pre class="file" id="file34" style="display: none">package view
 
 import (
         "github.com/dlima78/gocourse/src/controller/model/response"
