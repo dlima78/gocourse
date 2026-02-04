@@ -77,6 +77,13 @@ func TestFindUserByEmail(t *testing.T) {
 		UserController.FindUserByEmail(ctx)
 
 		assert.EqualValues(t, http.StatusOK, recorder.Code)
+
+		var response map[string]interface{}
+		err = json.Unmarshal(recorder.Body.Bytes(), &response)
+
+		assert.Nil(t, err)
+		assert.Equal(t, t.Name(), response["name"])
+		assert.Equal(t, "teste@mail.com", response["email"])
 	})
 }
 
