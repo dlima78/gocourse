@@ -12,6 +12,7 @@ import (
 
 	mock_user_controller "github.com/dlima78/gocourse/src/controller/mocks"
 	"github.com/dlima78/gocourse/src/controller/model/request"
+	"github.com/dlima78/gocourse/src/controller/model/response"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -81,5 +82,37 @@ func TestCreateUser(t *testing.T) {
 		UserController.CreateUser(ctx)
 
 		assert.Equal(t, http.StatusBadRequest, recorder.Code)
+	})
+
+	t.Run("success", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		ctx := mock_user_controller.GetTestingGinContext(recorder)
+
+		userRequest := request.UserRequest{
+			Email:    "teste@mail.com",
+			Password: "TEste@123",
+			Name:     "João",
+			Age:      45,
+		}
+
+		body, _ := json.Marshal(userRequest)
+
+		mock_user_controller.MakeRequest(
+			ctx, gin.Params{},
+			url.Values{},
+			"POST",
+			io.NopCloser(bytes.NewBufferString(string(body))))
+
+		UserController.CreateUser(ctx)
+
+		assert.Equal(t, http.StatusOK, recorder.Code)
+
+		var response response.UserResponse
+		err := json.Unmarshal(recorder.Body.Bytes(), &response)
+
+		assert.Nil(t, err)
+		assert.Equal(t, userRequest.Name, response.Name)
+		assert.Equal(t, userRequest.Email, response.Email)
+		assert.Equal(t, userRequest.Age, response.Age)
 	})
 }
