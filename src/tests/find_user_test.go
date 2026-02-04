@@ -11,6 +11,7 @@ import (
 
 	"github.com/dlima78/gocourse/src/controller"
 	mock_user_controller "github.com/dlima78/gocourse/src/controller/mocks"
+	"github.com/dlima78/gocourse/src/controller/model/response"
 	"github.com/dlima78/gocourse/src/model/repository"
 	"github.com/dlima78/gocourse/src/model/service"
 	"github.com/dlima78/gocourse/src/tests/connection"
@@ -78,12 +79,12 @@ func TestFindUserByEmail(t *testing.T) {
 
 		assert.EqualValues(t, http.StatusOK, recorder.Code)
 
-		var response map[string]interface{}
+		var response response.UserResponse
 		err = json.Unmarshal(recorder.Body.Bytes(), &response)
 
 		assert.Nil(t, err)
-		assert.Equal(t, t.Name(), response["name"])
-		assert.Equal(t, "teste@mail.com", response["email"])
+		assert.Equal(t, t.Name(), response.Name)
+		assert.Equal(t, "teste@mail.com", response.Email)
 	})
 }
 
@@ -121,11 +122,11 @@ func TestFindUserByID(t *testing.T) {
 
 		assert.EqualValues(t, http.StatusOK, recorder.Code)
 
-		var response map[string]interface{}
+		var response response.UserResponse
 		err = json.Unmarshal(recorder.Body.Bytes(), &response)
 
 		assert.Nil(t, err)
-		assert.Equal(t, t.Name(), response["name"])
-		assert.Equal(t, "teste@mail.com", response["email"])
+		assert.Equal(t, t.Name(), response.Name)
+		assert.Equal(t, "teste@mail.com", response.Email)
 	})
 }
