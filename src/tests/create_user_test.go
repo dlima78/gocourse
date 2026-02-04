@@ -79,7 +79,6 @@ func TestCreateUser(t *testing.T) {
 			io.NopCloser(bytes.NewBufferString(string(body))))
 
 		UserController.CreateUser(ctx)
-		UserController.CreateUser(ctx)
 
 		assert.Equal(t, http.StatusBadRequest, recorder.Code)
 	})
