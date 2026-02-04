@@ -14,7 +14,7 @@ import (
 )
 
 func TestDeleteUser(t *testing.T) {
-	t.Run("user_not_found_with_this_ID", func(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
 		recorder := httptest.NewRecorder()
 		ctx := mock_user_controller.GetTestingGinContext(recorder)
 		id := bson.NewObjectID().Hex()
