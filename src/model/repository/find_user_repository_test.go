@@ -112,7 +112,7 @@ func TestUserRepository_FindUserByID(t *testing.T) {
 		require.NotNil(t, result, "Expected to find a user")
 		require.EqualValues(t, "test@mail.com", result.GetEmail(), "Expected email to match")
 		require.EqualValues(t, "test", result.GetPassword(), "Expected password to match")
-		require.EqualValues(t, "Eduardo", result.GetPassword(), "Expected password to match")
+		require.EqualValues(t, "Eduardo", result.GetName(), "Expected password to match")
 
 	})
 
