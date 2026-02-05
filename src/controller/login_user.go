@@ -36,17 +36,17 @@ func (uc *userControllerInterface) LoginUser(c *gin.Context) {
 
 	if err != nil {
 		logger.Error(
-			"Error trying to call CreateUser service",
+			"Error trying to call Login service",
 			err,
-			zap.String("journey", "createUser"))
+			zap.String("journey", "loginUser"))
 		c.JSON(err.Code, err)
 		return
 	}
 
 	logger.Info(
-		"CreateUser controller executed successfully",
+		"LoginUser controller executed successfully",
 		zap.String("userId", domainResult.GetID()),
-		zap.String("journey", "createUser"),
+		zap.String("journey", "loginUser"),
 	)
 
 	c.Header("Authorization", token)
