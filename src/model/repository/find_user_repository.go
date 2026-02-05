@@ -96,7 +96,7 @@ func (ur *userRepository) FindUserByID(
 			err,
 			zap.String("journey", "findUserByID"))
 
-		return nil, rest_err.NewInternalServerError(errorMessage)
+		return nil, rest_err.NewUnauthorizedError(errorMessage)
 	}
 
 	logger.Info("FindUserByID repository executed successfully",
