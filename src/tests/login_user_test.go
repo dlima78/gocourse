@@ -38,5 +38,27 @@ func TestLoginUser(t *testing.T) {
 		assert.EqualValues(t, http.StatusBadRequest, recorder.Code)
 
 	})
+	t.Run("user_not_found", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		ctx := mock_user_controller.GetTestingGinContext(recorder)
+
+		userLoginRequest := request.UserLoginRequest{
+			Email:    "test@mail.com",
+			Password: "Te@st13@",
+		}
+
+		body, _ := json.Marshal(userLoginRequest)
+		mock_user_controller.MakeRequest(
+			ctx,
+			gin.Params{},
+			url.Values{},
+			"POST",
+			io.NopCloser(bytes.NewBufferString(string(body))))
+
+		UserController.LoginUser(ctx)
+
+		assert.EqualValues(t, http.StatusNotFound, recorder.Code)
+
+	})
 
 }
