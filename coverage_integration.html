@@ -63,7 +63,7 @@
 				
 				<option value="file3">github.com/dlima78/gocourse/src/model/repository/entity/converter/convert_entity_to_domain.go (0.0%)</option>
 				
-				<option value="file4">github.com/dlima78/gocourse/src/model/repository/find_user_repository.go (76.4%)</option>
+				<option value="file4">github.com/dlima78/gocourse/src/model/repository/find_user_repository.go (83.6%)</option>
 				
 				<option value="file5">github.com/dlima78/gocourse/src/model/repository/test_helper.go (59.1%)</option>
 				
@@ -264,7 +264,7 @@ import (
         "go.uber.org/zap"
 )
 
-func (ur *userRepository) FindUserByEmail(email string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov10" title="12">{
+func (ur *userRepository) FindUserByEmail(email string) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov10" title="13">{
         logger.Info("Init findUserByEmail repository",
                 zap.String("journey", "findUserByEmail"))
 
@@ -277,8 +277,8 @@ func (ur *userRepository) FindUserByEmail(email string) (model.UserDomainInterfa
         filter := bson.D{{Key: "email", Value: email}}
         err := collection.FindOne(context.Background(), filter).Decode(userEntity)
 
-        if err != nil </span><span class="cov9" title="10">{
-                if err == mongo.ErrNoDocuments </span><span class="cov9" title="10">{
+        if err != nil </span><span class="cov9" title="11">{
+                if err == mongo.ErrNoDocuments </span><span class="cov9" title="11">{
                         errorMessage := fmt.Sprintf("User not found with this email: %s", email)
                         logger.Error(errorMessage, err, zap.String("journey", "findUserByEmail"))
                         return nil, rest_err.NewNotFoundError(errorMessage)
@@ -298,7 +298,7 @@ func (ur *userRepository) FindUserByEmail(email string) (model.UserDomainInterfa
 
 func (ur *userRepository) FindUserByID(
         id string,
-) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov4" title="3">{
+) (model.UserDomainInterface, *rest_err.RestErr) <span class="cov5" title="4">{
         logger.Info("Init findUserByID repository",
                 zap.String("journey", "findUserByID"),
                 zap.String("searchingForId", id))
@@ -315,7 +315,7 @@ func (ur *userRepository) FindUserByID(
                 return nil, rest_err.NewBadRequestError(errorMessage)
         }</span>
 
-        <span class="cov3" title="2">logger.Info("ObjectID parsed successfully",
+        <span class="cov4" title="3">logger.Info("ObjectID parsed successfully",
                 zap.String("journey", "findUserByID"),
                 zap.String("objectIdHex", objectId.Hex()))
 
@@ -330,8 +330,8 @@ func (ur *userRepository) FindUserByID(
                 filter,
         ).Decode(userEntity)
 
-        if err != nil </span><span class="cov0" title="0">{
-                if err == mongo.ErrNoDocuments </span><span class="cov0" title="0">{
+        if err != nil </span><span class="cov1" title="1">{
+                if err == mongo.ErrNoDocuments </span><span class="cov1" title="1">{
                         errorMessage := fmt.Sprintf(
                                 "User not found with this ID: %s", id)
                         logger.Error(errorMessage,
@@ -345,7 +345,7 @@ func (ur *userRepository) FindUserByID(
                         err,
                         zap.String("journey", "findUserByID"))
 
-                return nil, rest_err.NewInternalServerError(errorMessage)</span>
+                return nil, rest_err.NewUnauthorizedError(errorMessage)</span>
         }
 
         <span class="cov3" title="2">logger.Info("FindUserByID repository executed successfully",
@@ -410,7 +410,7 @@ type MongoTestSetup struct {
 }
 
 // SetupMongoDB cria um container MongoDB e retorna a conexão pronta para usar
-func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class="cov10" title="11">{
+func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class="cov10" title="13">{
         ctx := context.Background()
 
         // Iniciar container MongoDB
@@ -420,14 +420,14 @@ func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class
         }</span>
 
         // Obter a string de conexão
-        <span class="cov10" title="11">mongoURI, err := mongodbContainer.ConnectionString(ctx)
+        <span class="cov10" title="13">mongoURI, err := mongodbContainer.ConnectionString(ctx)
         if err != nil </span><span class="cov0" title="0">{
                 mongodbContainer.Terminate(ctx)
                 t.Fatalf("Failed to get connection string: %v", err)
         }</span>
 
         // Conectar ao MongoDB
-        <span class="cov10" title="11">opts := options.Client().ApplyURI(mongoURI)
+        <span class="cov10" title="13">opts := options.Client().ApplyURI(mongoURI)
         client, err := mongo.Connect(opts)
         if err != nil </span><span class="cov0" title="0">{
                 mongodbContainer.Terminate(ctx)
@@ -435,13 +435,13 @@ func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class
         }</span>
 
         // Testar a conexão
-        <span class="cov10" title="11">if err := client.Ping(ctx, nil); err != nil </span><span class="cov0" title="0">{
+        <span class="cov10" title="13">if err := client.Ping(ctx, nil); err != nil </span><span class="cov0" title="0">{
                 client.Disconnect(ctx)
                 mongodbContainer.Terminate(ctx)
                 t.Fatalf("Failed to ping MongoDB: %v", err)
         }</span>
 
-        <span class="cov10" title="11">database := client.Database(databaseName)
+        <span class="cov10" title="13">database := client.Database(databaseName)
 
         return &amp;MongoTestSetup{
                 Client:    client,
@@ -452,11 +452,11 @@ func SetupMongoDB(t *testing.T, databaseName string) *MongoTestSetup <span class
 }
 
 // Cleanup encerra a conexão e termina o container
-func (m *MongoTestSetup) Cleanup() error <span class="cov10" title="11">{
+func (m *MongoTestSetup) Cleanup() error <span class="cov10" title="13">{
         if err := m.Client.Disconnect(m.Context); err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
-        <span class="cov10" title="11">return m.Container.Terminate(m.Context)</span>
+        <span class="cov10" title="13">return m.Container.Terminate(m.Context)</span>
 }
 </pre>
 		
@@ -529,7 +529,7 @@ const (
         MONGODB_USER_DB = "MONGODB_USER_DB"
 )
 
-func NewUserRepository(database *mongo.Database) UserRepository <span class="cov10" title="11">{
+func NewUserRepository(database *mongo.Database) UserRepository <span class="cov10" title="13">{
         return &amp;userRepository{
                 database,
         }
