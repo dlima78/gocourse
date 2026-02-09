@@ -113,6 +113,7 @@ func TestLoginUser(t *testing.T) {
 		UserController.LoginUser(ctx)
 
 		assert.EqualValues(t, http.StatusOK, recorder.Code)
+		assert.NotEmpty(t, recorder.Header().Get("Authorization"))
 
 	})
 
