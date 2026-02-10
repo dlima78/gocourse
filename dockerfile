@@ -22,6 +22,6 @@ RUN chmod +x /app/gocourse
 
 USER dulima
 
-EXPOSE 8080
+EXPOSE 8081
 
 CMD [ "./gocourse" ]

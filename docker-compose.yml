@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  golangcourse:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MONGODB_URL: mongodb://mongodb:27017
+      MONGODB_CRUD_DB: crud_database
+      MONGODB_USER_DB: users
+      JWT_SECRET_KEY: widduffba3374@483fiejn@_ddrii4ikedijkaskksd
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+    networks:
+      - golangcourse_network
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - golangcourse_network
+
+networks:
+  golangcourse_network:
