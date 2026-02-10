@@ -5,6 +5,7 @@ import (
 	"context"
 	"log"
 
+	_ "github.com/dlima78/gocourse/docs"
 	"github.com/dlima78/gocourse/src/configuration/database/mongodb"
 	"github.com/dlima78/gocourse/src/controller"
 	"github.com/dlima78/gocourse/src/controller/routes"

@@ -4,6 +4,8 @@ import (
 	"github.com/dlima78/gocourse/src/controller"
 	"github.com/dlima78/gocourse/src/model"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func InitRoutes(r *gin.RouterGroup, userController controller.UserControllerInterface) {
@@ -13,4 +15,5 @@ func InitRoutes(r *gin.RouterGroup, userController controller.UserControllerInte
 	r.POST("/login", userController.LoginUser)
 	r.PUT("/updateUser/:userId", userController.UpdateUser)
 	r.DELETE("/deleteUser/:userId", userController.DeleteUser)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
