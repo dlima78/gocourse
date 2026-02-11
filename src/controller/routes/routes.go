@@ -13,7 +13,7 @@ func InitRoutes(r *gin.RouterGroup, userController controller.UserControllerInte
 	r.GET("/getUserByEmail/:userEmail", model.VerifyTokenMiddleware, userController.FindUserByEmail)
 	r.POST("/createUser", userController.CreateUser)
 	r.POST("/login", userController.LoginUser)
-	r.PUT("/updateUser/:userId", userController.UpdateUser)
-	r.DELETE("/deleteUser/:userId", userController.DeleteUser)
+	r.PUT("/updateUser/:userId", model.VerifyTokenMiddleware, userController.UpdateUser)
+	r.DELETE("/deleteUser/:userId", model.VerifyTokenMiddleware, userController.DeleteUser)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
