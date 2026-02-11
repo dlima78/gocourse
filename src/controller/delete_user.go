@@ -20,7 +20,6 @@ import (
 // @Failure 400 {object} rest_err.RestErr
 // @Failure 500 {object} rest_err.RestErr
 // @Router /deleteUser/{userId} [delete]
-
 func (uc *userControllerInterface) DeleteUser(c *gin.Context) {
 	logger.Info("Init deleteUser controller",
 		zap.String("journey", "deleteUser"),

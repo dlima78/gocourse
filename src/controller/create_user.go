@@ -16,6 +16,17 @@ var (
 	UserDomainInterface model.UserDomainInterface
 )
 
+// CreateUser Creates a new user
+// @Summary Create a new user
+// @Description Create a new user with the provided user information
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param userRequest body request.UserRequest true "User information for registration"
+// @Success 200 {object} response.UserResponse
+// @Failure 400 {object} rest_err.RestErr
+// @Failure 500 {object} rest_err.RestErr
+// @Router /createUser [post]
 func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 	logger.Info("About to start user application",
 		zap.String("journey", "createUser"),
